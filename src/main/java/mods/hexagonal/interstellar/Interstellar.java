@@ -55,6 +55,7 @@ import mods.hexagonal.interstellar.command.CelestialCommand;
 import mods.hexagonal.interstellar.registry.CelestialRegistry;
 import mods.hexagonal.interstellar.network.CelestialNetworkHandler;
 import org.slf4j.Logger;
+import net.minecraft.client.renderer.GameRenderer;
 
 import java.util.List;
 

@@ -9,6 +9,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.logging.LogUtils;
 import mods.hexagonal.interstellar.celestial.CelestialBody;
 import mods.hexagonal.interstellar.celestial.SolarSystem;
+import mods.hexagonal.interstellar.network.CelestialNetworkHandler;
 import mods.hexagonal.interstellar.registry.CelestialRegistry;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -38,8 +39,7 @@ public class CelestialCommand {
 
     // Command constants
     private static final String MAKE_COMMAND = "make";
-    private static final String SPAWN_SOLAR_COMMAND = "spawn solar";
-    private static final String SPAWN_SOLAR_COMMAND_NO_SPACES = "spawnsolar";
+    private static final String SPAWN_SOLAR_COMMAND = "spawnsolar";
     private static final String LIST_COMMAND = "list";
     private static final String REMOVE_COMMAND = "remove";
     private static final String TEST_COMMAND = "test";
@@ -437,7 +437,20 @@ public class CelestialCommand {
             );
 
             // Register the celestial body
-            CelestialRegistry.registerCelestialBody(celestialBody, dimension);
+            LOGGER.info("Registering celestial body '{}' in dimension '{}'", name, dimension.location().getPath());
+            boolean registered = CelestialRegistry.registerCelestialBody(celestialBody, dimension);
+
+            if (!registered) {
+                LOGGER.error("Failed to register celestial body: {}", name);
+                source.sendFailure(Component.literal("Failed to register celestial body: " + name));
+                return 0;
+            }
+
+            LOGGER.info("Successfully registered celestial body: {}", name);
+
+            // Send network synchronization to all players in the dimension
+            LOGGER.info("Sending network sync for celestial body: {}", name);
+            CelestialNetworkHandler.broadcastCelestialBodySync(celestialBody, dimension);
 
             // Create detailed success message
             String dimensionName = dimension.location().getPath();
@@ -515,6 +528,25 @@ public class CelestialCommand {
              }
 
              LOGGER.info("All celestial bodies registered successfully");
+
+             // Send network synchronization to all players in the dimension
+             LOGGER.info("=== Starting network synchronization ===");
+             for (int i = 0; i < celestialBodies.size(); i++) {
+                 CelestialBody celestialBody = celestialBodies.get(i);
+                 LOGGER.info("Sending network sync for celestial body {}: {}", i + 1, celestialBody.getDisplayName());
+
+                 // Broadcast synchronization to all players in the dimension
+                 CelestialNetworkHandler.broadcastCelestialBodySync(celestialBody, currentDimension);
+                 LOGGER.info("Network sync sent for celestial body: {}", celestialBody.getDisplayName());
+             }
+
+             // Also send full registry sync to the executing player for immediate feedback
+             LOGGER.info("Sending full registry sync to player: {}", player.getName().getString());
+             CelestialNetworkHandler.sendFullRegistrySync(player);
+             LOGGER.info("Full registry sync sent to player");
+
+             LOGGER.info("=== Network synchronization completed ===");
+
              source.sendSuccess(() ->
                  Component.literal(String.format("Spawned solar system with %d celestial bodies at your location",
                      celestialBodies.size())), true);
@@ -600,7 +632,20 @@ public class CelestialCommand {
              }
 
              // Remove the celestial body
-             CelestialRegistry.unregisterCelestialBody(toRemove, currentDimension);
+             LOGGER.info("Removing celestial body '{}' from dimension '{}'", toRemove.getDisplayName(), currentDimension.location().getPath());
+             boolean removed = CelestialRegistry.unregisterCelestialBody(toRemove, currentDimension);
+
+             if (!removed) {
+                 LOGGER.error("Failed to remove celestial body: {}", toRemove.getDisplayName());
+                 source.sendFailure(Component.literal("Failed to remove celestial body: " + toRemove.getDisplayName()));
+                 return 0;
+             }
+
+             LOGGER.info("Successfully removed celestial body: {}", toRemove.getDisplayName());
+
+             // Send network removal notification to all players in the dimension
+             LOGGER.info("Sending network removal notification for celestial body: {}", toRemove.getDisplayName());
+             CelestialNetworkHandler.broadcastCelestialBodyRemoval(toRemove, currentDimension);
 
              source.sendSuccess(() ->
                  Component.literal("Removed celestial body '" + toRemove.getDisplayName() + "'"), true);
@@ -734,7 +779,7 @@ public class CelestialCommand {
         context.getSource().sendSuccess(() ->
             Component.literal("§e/celestial make <name> <size> <texture> [options...]§f - Create a celestial body"), false);
         context.getSource().sendSuccess(() ->
-            Component.literal("§e/celestial spawn solar§f - Spawn a complete solar system at your location"), false);
+            Component.literal("§e/celestial spawnsolar§f - Spawn a complete solar system at your location"), false);
         context.getSource().sendSuccess(() ->
             Component.literal("§e/celestial list§f - List all celestial bodies in current dimension"), false);
         context.getSource().sendSuccess(() ->
@@ -757,8 +802,7 @@ public class CelestialCommand {
                 case MAKE_COMMAND:
                     return showMakeHelp(context);
                 case "spawn":
-                case "spawn solar":
-                case SPAWN_SOLAR_COMMAND_NO_SPACES:
+                case "spawnsolar":
                     return showSpawnSolarHelp(context);
                 case LIST_COMMAND:
                     return showListHelp(context);
@@ -845,7 +889,7 @@ public class CelestialCommand {
         context.getSource().sendSuccess(() ->
             Component.literal("§6=== Spawn Solar Command Help ==="), false);
         context.getSource().sendSuccess(() ->
-            Component.literal("§eSyntax:§f /celestial spawn solar"), false);
+            Component.literal("§eSyntax:§f /celestial spawnsolar"), false);
         context.getSource().sendSuccess(() ->
             Component.literal(""), false);
         context.getSource().sendSuccess(() ->
@@ -861,7 +905,7 @@ public class CelestialCommand {
         context.getSource().sendSuccess(() ->
             Component.literal("§eExample:"), false);
         context.getSource().sendSuccess(() ->
-            Component.literal("  §7/celestial spawn solar"), false);
+            Component.literal("  §7/celestial spawnsolar"), false);
         return 1;
     }
 

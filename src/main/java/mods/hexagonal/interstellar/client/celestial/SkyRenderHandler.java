@@ -50,6 +50,12 @@ public class SkyRenderHandler {
             return;
         }
 
+        LOGGER.info("=== CLIENT: Registering celestial body ===");
+        LOGGER.info("Celestial body: {} (sun: {}, size: {}, texture: {})",
+            celestialBody.getDisplayName(), celestialBody.isSun(),
+            celestialBody.getSize(), celestialBody.getTexture());
+        LOGGER.info("Dimension: {}", dimension.location().getPath());
+
         celestialBodiesByDimension.computeIfAbsent(dimension, k -> new ArrayList<>());
 
         List<CelestialBody> bodiesInDimension = celestialBodiesByDimension.get(dimension);
@@ -66,9 +72,15 @@ public class SkyRenderHandler {
             }
 
             bodiesInDimension.add(celestialBody);
-            LOGGER.debug("Registered celestial body {} in dimension {}",
+            LOGGER.info("Successfully registered celestial body '{}' in dimension '{}' on CLIENT",
+                celestialBody.getDisplayName(), dimension.location().getPath());
+            LOGGER.info("Total celestial bodies in dimension {}: {}", dimension.location().getPath(), bodiesInDimension.size());
+        } else {
+            LOGGER.debug("Celestial body '{}' already registered in dimension '{}'",
                 celestialBody.getDisplayName(), dimension.location().getPath());
         }
+
+        LOGGER.info("=== CLIENT: Celestial body registration completed ===");
     }
 
     /**
@@ -165,14 +177,41 @@ public class SkyRenderHandler {
         ClientLevel level = minecraft.level;
 
         if (level == null) {
+            LOGGER.debug("Render sky event: level is null");
             return;
         }
 
+        LOGGER.debug("Render sky event triggered in dimension: {}", level.dimension().location().getPath());
+
         // Get celestial bodies for current dimension
         List<CelestialBody> celestialBodies = getCelestialBodiesForDimension(level.dimension());
+        LOGGER.info("=== CLIENT RENDER: Retrieving celestial bodies for rendering ===");
+        LOGGER.info("Found {} celestial bodies in dimension {}", celestialBodies.size(), level.dimension().location().getPath());
+
         if (celestialBodies.isEmpty()) {
+            LOGGER.info("No celestial bodies to render in dimension {} - this indicates the storage/retrieval disconnect!",
+                level.dimension().location().getPath());
             return;
         }
+
+        LOGGER.info("Celestial bodies found for rendering:");
+
+        // Log details about celestial bodies
+        for (int i = 0; i < celestialBodies.size(); i++) {
+            CelestialBody body = celestialBodies.get(i);
+            LOGGER.debug("Celestial body {}: {} (sun: {}, size: {}, pos: {:.1f}, {:.1f}, {:.1f})",
+                i + 1, body.getDisplayName(), body.isSun(), body.getSize(),
+                body.getLocation().x, body.getLocation().y, body.getLocation().z);
+        }
+
+        // Check dimension validation
+        if (!shouldRenderCelestialBodies(level)) {
+            LOGGER.warn("Dimension validation failed for dimension: {} - celestial bodies will not be rendered",
+                level.dimension().location().getPath());
+            return;
+        }
+
+        LOGGER.debug("Starting celestial body rendering in dimension {}", level.dimension().location().getPath());
 
         // Update orbital positions
         updateCelestialBodyOrbits(celestialBodies);
@@ -180,16 +219,13 @@ public class SkyRenderHandler {
         // Set up rendering state
         setupCelestialRendering();
 
-        // Render celestial bodies
-        Camera camera = event.getCamera();
-        PoseStack poseStack = event.getPoseStack();
-        MultiBufferSource.BufferSource buffer = minecraft.renderBuffers().bufferSource();
-
-        CelestialRenderer.renderCelestialBodies(celestialBodies, event.getPartialTick(),
-                                              poseStack, buffer);
+        // Render celestial bodies using the updated API
+        CelestialRenderer.renderCelestialBodies(event, celestialBodies);
 
         // Clean up rendering state
         cleanupCelestialRendering();
+
+        LOGGER.debug("Celestial body rendering completed for dimension {}", level.dimension().location().getPath());
     }
 
     /**
@@ -247,27 +283,32 @@ public class SkyRenderHandler {
      * @return true if celestial bodies should be rendered
      */
     private static boolean shouldRenderCelestialBodies(ClientLevel level) {
-        // Only render in space dimension or when specifically enabled
-        if (!level.dimension().location().getPath().equals("space_dimension")) {
-            return false;
-        }
+        LOGGER.debug("Checking if celestial bodies should render in dimension: {}", level.dimension().location().getPath());
+
+        // Allow rendering in all dimensions - users can create celestial bodies anywhere
+        // This provides more flexibility and better user experience
+        LOGGER.debug("Dimension check passed: rendering celestial bodies in all dimensions");
 
         // Don't render if player is in a vehicle or underwater (performance)
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.player == null) {
+            LOGGER.debug("Player check failed: minecraft.player is null");
             return false;
         }
 
         // Check if player is underwater
         if (minecraft.player.isUnderWater()) {
+            LOGGER.debug("Underwater check failed: player is underwater");
             return false;
         }
 
         // Check if GUI is hidden (F1 mode)
         if (minecraft.options.hideGui) {
+            LOGGER.debug("GUI check failed: GUI is hidden (F1 mode)");
             return false;
         }
 
+        LOGGER.debug("All validation checks passed - celestial bodies will be rendered");
         return true;
     }
 
