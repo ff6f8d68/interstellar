@@ -39,6 +39,7 @@ public class CelestialCommand {
     // Command constants
     private static final String MAKE_COMMAND = "make";
     private static final String SPAWN_SOLAR_COMMAND = "spawn solar";
+    private static final String SPAWN_SOLAR_COMMAND_NO_SPACES = "spawnsolar";
     private static final String LIST_COMMAND = "list";
     private static final String REMOVE_COMMAND = "remove";
     private static final String TEST_COMMAND = "test";
@@ -757,7 +758,7 @@ public class CelestialCommand {
                     return showMakeHelp(context);
                 case "spawn":
                 case "spawn solar":
-                case SPAWN_SOLAR_COMMAND.replace(" ", ""):
+                case SPAWN_SOLAR_COMMAND_NO_SPACES:
                     return showSpawnSolarHelp(context);
                 case LIST_COMMAND:
                     return showListHelp(context);
