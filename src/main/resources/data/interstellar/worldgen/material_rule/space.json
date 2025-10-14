@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:sequence",
+  "rules": [
+    {
+      "type": "minecraft:always",
+      "state": { "Name": "minecraft:air" }
+    }
+  ]
+}

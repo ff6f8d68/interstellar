@@ -1,0 +1,34 @@
+{
+  "mappings": {
+    "com/sierravanguard/beyond_oxygen/mixin/EntityMixin": {
+      "updateFluidOnEyes": "Lnet/minecraft/world/entity/Entity;m_20323_()V",
+      "isInBubbleColumn": "Lnet/minecraft/world/entity/Entity;m_20305_()Z",
+      "updateSwimming": "Lnet/minecraft/world/entity/Entity;m_5844_()V",
+      "baseTick": "Lnet/minecraft/world/entity/Entity;m_6075_()V"
+    },
+    "com/sierravanguard/beyond_oxygen/mixin/CameraMixin": {
+      "getFluidInCamera": "Lnet/minecraft/client/Camera;m_167685_()Lnet/minecraft/world/level/material/FogType;",
+      "tick": "Lnet/minecraft/client/Camera;m_90565_()V"
+    },
+    "com/sierravanguard/beyond_oxygen/mixin/BOServerPlayerMixin": {
+      "tick": "Lnet/minecraft/server/level/ServerPlayer;m_8119_()V"
+    }
+  },
+  "data": {
+    "searge": {
+      "com/sierravanguard/beyond_oxygen/mixin/EntityMixin": {
+        "updateFluidOnEyes": "Lnet/minecraft/world/entity/Entity;m_20323_()V",
+        "isInBubbleColumn": "Lnet/minecraft/world/entity/Entity;m_20305_()Z",
+        "updateSwimming": "Lnet/minecraft/world/entity/Entity;m_5844_()V",
+        "baseTick": "Lnet/minecraft/world/entity/Entity;m_6075_()V"
+      },
+      "com/sierravanguard/beyond_oxygen/mixin/CameraMixin": {
+        "getFluidInCamera": "Lnet/minecraft/client/Camera;m_167685_()Lnet/minecraft/world/level/material/FogType;",
+        "tick": "Lnet/minecraft/client/Camera;m_90565_()V"
+      },
+      "com/sierravanguard/beyond_oxygen/mixin/BOServerPlayerMixin": {
+        "tick": "Lnet/minecraft/server/level/ServerPlayer;m_8119_()V"
+      }
+    }
+  }
+}
