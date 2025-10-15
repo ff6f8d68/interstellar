@@ -65,16 +65,8 @@ public class CelestialBody {
             ResourceKey<Level> dimension,
             ResourceKey<Level> goesTo
     ) {
-        LOGGER.info("=== Creating CelestialBody ===");
-        LOGGER.info("Parameters: isSun={}, size={}, texture={}, perTextureSize={}, inOrbit={}, lightColor={}, location={}, dimension={}, goesTo={}",
-            isSun, size, texture, perTextureSize, inOrbit, lightColor, location,
-            dimension != null ? dimension.location().getPath() : "null",
-            goesTo != null ? goesTo.location().getPath() : "null");
-
         // Validation
-        LOGGER.info("Validating parameters...");
         validateParameters(size, texture, perTextureSize, location, dimension, goesTo);
-        LOGGER.info("Parameter validation completed");
 
         this.isSun = isSun;
         this.size = size;
@@ -89,20 +81,13 @@ public class CelestialBody {
 
         // Initialize orbital mechanics if needed
         if (inOrbit && orbitsAround != null) {
-            LOGGER.info("Initializing orbit mechanics...");
             initializeOrbit();
-            LOGGER.info("Orbit initialization completed");
         } else {
             this.orbitRadius = 0;
             this.orbitSpeed = 0;
             this.orbitAngle = 0;
             this.orbitStartTime = 0;
-            LOGGER.info("Skipping orbit initialization (inOrbit={}, orbitsAround={})", inOrbit, orbitsAround != null);
         }
-
-        LOGGER.info("Successfully created CelestialBody: {} (sun: {}, size: {}) in dimension {}",
-            texture.getPath(), isSun, size, dimension.location().getPath());
-        LOGGER.info("=== CelestialBody creation completed ===");
     }
 
     /**
@@ -155,8 +140,6 @@ public class CelestialBody {
         // Record start time for consistent orbital calculations
         this.orbitStartTime = System.currentTimeMillis();
 
-        LOGGER.debug("Initialized orbit for {} around {} with radius {} and speed {}",
-            texture.getPath(), orbitsAround.getTexture().getPath(), orbitRadius, orbitSpeed);
     }
 
     // Getters
@@ -287,12 +270,13 @@ public class CelestialBody {
         if (obj == null || getClass() != obj.getClass()) return false;
         CelestialBody that = (CelestialBody) obj;
         return Objects.equals(texture, that.texture) &&
-               Objects.equals(dimension, that.dimension);
+               Objects.equals(dimension, that.dimension) &&
+               Objects.equals(location, that.location);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(texture, dimension);
+        return Objects.hash(texture, dimension, location);
     }
 
     @Override

@@ -48,34 +48,34 @@ public class CelestialRenderTypes extends RenderType {
     }
 
     /**
-     * Creates the planet render type with proper configuration.
-     */
-    private static RenderType createPlanetRenderType() {
-        RenderType.CompositeState renderState = RenderType.CompositeState.builder()
-            .setShaderState(RENDERTYPE_SOLID_SHADER)
-            .setTextureState(NO_TEXTURE)
-            .setTransparencyState(NO_TRANSPARENCY)
-            .setDepthTestState(LEQUAL_DEPTH_TEST)
-            .setCullState(NO_CULL)
-            .setLightmapState(LIGHTMAP)
-            .setOverlayState(NO_OVERLAY)
-            .setLayeringState(VIEW_OFFSET_Z_LAYERING)
-            .setOutputState(MAIN_TARGET)
-            .setTexturingState(DEFAULT_TEXTURING)
-            .setWriteMaskState(COLOR_DEPTH_WRITE)
-            .setLineState(DEFAULT_LINE)
-            .createCompositeState(false);
+      * Creates the planet render type with proper configuration.
+      */
+     private static RenderType createPlanetRenderType() {
+         RenderType.CompositeState renderState = RenderType.CompositeState.builder()
+             .setShaderState(RENDERTYPE_SOLID_SHADER)
+             .setTextureState(BLOCK_SHEET_MIPPED)  // Enable texture support for planet textures
+             .setTransparencyState(NO_TRANSPARENCY)
+             .setDepthTestState(LEQUAL_DEPTH_TEST)
+             .setCullState(NO_CULL)
+             .setLightmapState(NO_LIGHTMAP)  // Disable lightmap since we're handling lighting manually
+             .setOverlayState(NO_OVERLAY)
+             .setLayeringState(VIEW_OFFSET_Z_LAYERING)
+             .setOutputState(MAIN_TARGET)
+             .setTexturingState(DEFAULT_TEXTURING)
+             .setWriteMaskState(COLOR_DEPTH_WRITE)
+             .setLineState(DEFAULT_LINE)
+             .createCompositeState(false);
 
-        return RenderType.create(
-            "interstellar_planet",
-            DefaultVertexFormat.NEW_ENTITY,
-            VertexFormat.Mode.QUADS,
-            256,
-            false,
-            false,
-            renderState
-        );
-    }
+         return RenderType.create(
+             "interstellar_planet",
+             DefaultVertexFormat.POSITION_TEX_COLOR_NORMAL,  // Use POSITION_TEX_COLOR_NORMAL to support UV texture coordinates and normals
+             VertexFormat.Mode.QUADS,
+             256,
+             false,
+             false,
+             renderState
+         );
+     }
 
     /**
      * Creates the sun render type with proper configuration.
@@ -83,7 +83,7 @@ public class CelestialRenderTypes extends RenderType {
     private static RenderType createSunRenderType() {
         RenderType.CompositeState renderState = RenderType.CompositeState.builder()
             .setShaderState(RENDERTYPE_SOLID_SHADER)
-            .setTextureState(NO_TEXTURE)
+            .setTextureState(BLOCK_SHEET_MIPPED)  // Enable texture support for sun textures
             .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
             .setDepthTestState(LEQUAL_DEPTH_TEST)
             .setCullState(NO_CULL)
@@ -98,7 +98,7 @@ public class CelestialRenderTypes extends RenderType {
 
         return RenderType.create(
             "interstellar_sun",
-            DefaultVertexFormat.NEW_ENTITY,
+            DefaultVertexFormat.POSITION_TEX_COLOR_NORMAL,  // Use texture format for sun textures with normal support
             VertexFormat.Mode.QUADS,
             256,
             false,

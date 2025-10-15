@@ -171,7 +171,7 @@ public class SolarSystem {
         sun = new CelestialBody(
             true, // isSun
             sunSize, // size
-            new ResourceLocation("interstellar", "textures/celestial/sun.png"), // texture
+            new ResourceLocation("interstellar", "textures/planetbase.png"), // texture (using existing texture)
             512, // perTextureSize
             false, // inOrbit (sun doesn't orbit)
             null, // orbitsAround (sun is central)
@@ -609,7 +609,7 @@ public class SolarSystem {
         sun = new CelestialBody(
             true, // isSun
             sunSize, // size
-            new ResourceLocation("interstellar", "textures/celestial/sun.png"), // texture
+            new ResourceLocation("interstellar", "textures/planetbase.png"), // texture (using existing texture)
             512, // perTextureSize
             false, // inOrbit (sun doesn't orbit)
             null, // orbitsAround (sun is central)

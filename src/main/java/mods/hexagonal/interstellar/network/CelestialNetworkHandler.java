@@ -8,6 +8,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
@@ -43,6 +44,9 @@ public class CelestialNetworkHandler {
 
     private static int packetId = 0;
 
+    // Server lifecycle management
+    private static MinecraftServer serverInstance = null;
+
     /**
      * Initializes the network handler and registers all packet types.
      */
@@ -53,6 +57,25 @@ public class CelestialNetworkHandler {
         registerPackets();
 
         LOGGER.info("Celestial network handler initialized");
+    }
+
+    /**
+     * Sets the Minecraft server instance for server level access.
+     *
+     * @param server The Minecraft server instance
+     */
+    public static void setServerInstance(MinecraftServer server) {
+        serverInstance = server;
+        LOGGER.debug("Server instance set for celestial network handler");
+    }
+
+    /**
+     * Gets the Minecraft server instance.
+     *
+     * @return The Minecraft server instance, or null if not set
+     */
+    public static MinecraftServer getServerInstance() {
+        return serverInstance;
     }
 
     /**
@@ -257,9 +280,18 @@ public class CelestialNetworkHandler {
      */
     private static ServerLevel getServerLevel(ResourceKey<Level> dimension) {
         try {
-            // This is a simplified approach - in a real implementation,
-            // you would need access to the MinecraftServer instance
-            return null;
+            if (serverInstance == null) {
+                LOGGER.warn("Cannot get server level for dimension '{}': server instance not available",
+                    dimension.location().getPath());
+                return null;
+            }
+
+            ServerLevel level = serverInstance.getLevel(dimension);
+            if (level == null) {
+                LOGGER.warn("Server level not found for dimension '{}'", dimension.location().getPath());
+            }
+
+            return level;
         } catch (Exception e) {
             LOGGER.error("Failed to get server level for dimension '{}'",
                 dimension.location().getPath(), e);

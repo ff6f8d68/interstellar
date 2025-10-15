@@ -423,6 +423,10 @@ public class Interstellar {
 
         // Perform server-side initialization
         try {
+            // Set server instance for celestial systems
+            CelestialNetworkHandler.setServerInstance(event.getServer());
+            CelestialRegistry.setServerInstance(event.getServer());
+
             // Validate server-side celestial systems
             validateServerSideSystems();
 

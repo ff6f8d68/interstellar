@@ -40,6 +40,7 @@ public class CelestialCommand {
     // Command constants
     private static final String MAKE_COMMAND = "make";
     private static final String SPAWN_SOLAR_COMMAND = "spawnsolar";
+    private static final String SPAWN_TEST_OBJECT_COMMAND = "spawntestobject";
     private static final String LIST_COMMAND = "list";
     private static final String REMOVE_COMMAND = "remove";
     private static final String TEST_COMMAND = "test";
@@ -209,6 +210,12 @@ public class CelestialCommand {
                 )
                 .then(Commands.literal(SPAWN_SOLAR_COMMAND)
                     .executes(CelestialCommand::executeSpawnSolarCommand)
+                )
+                .then(Commands.literal(SPAWN_TEST_OBJECT_COMMAND)
+                    .executes(CelestialCommand::executeSpawnTestObjectCommand)
+                    .then(Commands.argument(SIZE_PARAM, IntegerArgumentType.integer(1, 1000))
+                        .executes(CelestialCommand::executeSpawnTestObjectCommandWithSize)
+                    )
                 )
                 .then(Commands.literal(LIST_COMMAND)
                     .executes(CelestialCommand::executeListCommand)
@@ -564,6 +571,143 @@ public class CelestialCommand {
      }
 
     /**
+     * Executes the spawn test object command.
+     */
+    private static int executeSpawnTestObjectCommand(CommandContext<CommandSourceStack> context) {
+        try {
+            LOGGER.info("=== Starting executeSpawnTestObjectCommand ===");
+            CommandSourceStack source = context.getSource();
+            ServerPlayer player = source.getPlayer();
+
+            if (player == null) {
+                LOGGER.error("Player is null - command can only be executed by a player");
+                source.sendFailure(Component.literal("This command can only be executed by a player"));
+                return 0;
+            }
+
+            LOGGER.info("Player: {}", player.getName().getString());
+            Vec3 playerPos = player.position();
+            ResourceKey<Level> currentDimension = player.level().dimension();
+            LOGGER.info("Player position: {}, Dimension: {}", playerPos, currentDimension.location().getPath());
+
+            // Check if registry is initialized
+            if (!CelestialRegistry.isInitialized()) {
+                LOGGER.error("CelestialRegistry is not initialized!");
+                source.sendFailure(Component.literal("Celestial registry is not initialized"));
+                return 0;
+            }
+            LOGGER.info("CelestialRegistry is initialized");
+
+            // Create test celestial body at player's location with default size
+            LOGGER.info("Creating test celestial body...");
+            CelestialBody testBody = createTestCelestialBody(playerPos, currentDimension, DEFAULT_SIZE);
+            LOGGER.info("Test celestial body created successfully");
+
+            // Register the celestial body
+            LOGGER.info("Registering test celestial body...");
+            boolean registered = CelestialRegistry.registerCelestialBody(testBody, currentDimension);
+            if (!registered) {
+                LOGGER.error("Failed to register test celestial body");
+                source.sendFailure(Component.literal("Failed to register test celestial body"));
+                return 0;
+            }
+            LOGGER.info("Test celestial body registered successfully");
+
+            // Send network synchronization to all players in the dimension
+            LOGGER.info("Sending network sync for test celestial body");
+            CelestialNetworkHandler.broadcastCelestialBodySync(testBody, currentDimension);
+
+            // Also send full registry sync to the executing player for immediate feedback
+            LOGGER.info("Sending full registry sync to player: {}", player.getName().getString());
+            CelestialNetworkHandler.sendFullRegistrySync(player);
+
+            source.sendSuccess(() ->
+                Component.literal(String.format("Spawned test celestial body '%s' at your location (size: %d, sun: %s)",
+                    testBody.getDisplayName(), testBody.getSize(), testBody.isSun())), true);
+
+            LOGGER.info("Player {} spawned test celestial body at {} in dimension {}",
+                player.getName().getString(), playerPos, currentDimension.location().getPath());
+            LOGGER.info("=== executeSpawnTestObjectCommand completed successfully ===");
+            return 1;
+
+        } catch (Exception e) {
+            LOGGER.error("=== executeSpawnTestObjectCommand failed with exception ===", e);
+            context.getSource().sendFailure(Component.literal("Error spawning test object: " + e.getMessage()));
+            return 0;
+        }
+    }
+
+    /**
+     * Executes the spawn test object command with size parameter.
+     */
+    private static int executeSpawnTestObjectCommandWithSize(CommandContext<CommandSourceStack> context) {
+        try {
+            LOGGER.info("=== Starting executeSpawnTestObjectCommandWithSize ===");
+            CommandSourceStack source = context.getSource();
+            ServerPlayer player = source.getPlayer();
+
+            if (player == null) {
+                LOGGER.error("Player is null - command can only be executed by a player");
+                source.sendFailure(Component.literal("This command can only be executed by a player"));
+                return 0;
+            }
+
+            // Get the size parameter
+            int size = IntegerArgumentType.getInteger(context, SIZE_PARAM);
+
+            LOGGER.info("Player: {}, Size: {}", player.getName().getString(), size);
+            Vec3 playerPos = player.position();
+            ResourceKey<Level> currentDimension = player.level().dimension();
+            LOGGER.info("Player position: {}, Dimension: {}", playerPos, currentDimension.location().getPath());
+
+            // Check if registry is initialized
+            if (!CelestialRegistry.isInitialized()) {
+                LOGGER.error("CelestialRegistry is not initialized!");
+                source.sendFailure(Component.literal("Celestial registry is not initialized"));
+                return 0;
+            }
+            LOGGER.info("CelestialRegistry is initialized");
+
+            // Create test celestial body at player's location with specified size
+            LOGGER.info("Creating test celestial body with size {}...", size);
+            CelestialBody testBody = createTestCelestialBody(playerPos, currentDimension, size);
+            LOGGER.info("Test celestial body created successfully");
+
+            // Register the celestial body
+            LOGGER.info("Registering test celestial body...");
+            boolean registered = CelestialRegistry.registerCelestialBody(testBody, currentDimension);
+            if (!registered) {
+                LOGGER.error("Failed to register test celestial body");
+                source.sendFailure(Component.literal("Failed to register test celestial body"));
+                return 0;
+            }
+            LOGGER.info("Test celestial body registered successfully");
+
+            // Send network synchronization to all players in the dimension
+            LOGGER.info("Sending network sync for test celestial body");
+            CelestialNetworkHandler.broadcastCelestialBodySync(testBody, currentDimension);
+
+            // Also send full registry sync to the executing player for immediate feedback
+            LOGGER.info("Sending full registry sync to player: {}", player.getName().getString());
+            CelestialNetworkHandler.sendFullRegistrySync(player);
+
+            source.sendSuccess(() ->
+                Component.literal(String.format("Spawned test celestial body '%s' at your location (size: %d, sun: %s)",
+                    testBody.getDisplayName(), testBody.getSize(), testBody.isSun())), true);
+
+            LOGGER.info("Player {} spawned test celestial body at {} in dimension {} with size {}",
+                player.getName().getString(), playerPos, currentDimension.location().getPath(), size);
+            LOGGER.info("=== executeSpawnTestObjectCommandWithSize completed successfully ===");
+            return 1;
+
+        } catch (Exception e) {
+            LOGGER.error("=== executeSpawnTestObjectCommandWithSize failed with exception ===", e);
+            context.getSource().sendFailure(Component.literal("Error spawning test object: " + e.getMessage()));
+            return 0;
+        }
+    }
+
+    /**
      * Executes the list command.
      */
     private static int executeListCommand(CommandContext<CommandSourceStack> context) {
@@ -771,6 +915,44 @@ public class CelestialCommand {
     }
 
     /**
+     * Creates a test celestial body with OBJ model support at the specified location.
+     */
+    private static CelestialBody createTestCelestialBody(Vec3 location, ResourceKey<Level> dimension, int size) {
+        LOGGER.info("Creating test celestial body at {} in dimension {} with size {}", location, dimension.location().getPath(), size);
+
+        // Test parameters for OBJ model celestial body
+        boolean isSun = false; // Default to planet for testing OBJ models
+        String texturePath = "interstellar:planetbase.png";
+        ResourceLocation texture = validateTexture(texturePath);
+
+        if (texture == null) {
+            throw new IllegalArgumentException("Invalid texture format: " + texturePath);
+        }
+
+        int perTextureSize = DEFAULT_PER_TEXTURE_SIZE;
+        boolean inOrbit = false; // Test objects don't orbit by default
+        int lightColor = isSun ? DEFAULT_LIGHT_COLOR : 0xFF6666FF; // Blue for planets, white for suns
+
+        // Create celestial body with OBJ model support
+        CelestialBody celestialBody = new CelestialBody(
+            isSun,
+            size,
+            texture,
+            perTextureSize,
+            inOrbit,
+            null, // No orbit target for test objects
+            lightColor,
+            location,
+            dimension,
+            dimension // Teleport to same dimension for simplicity
+        );
+
+        LOGGER.info("Test celestial body created: {} (sun: {}, size: {}, texture: {})",
+            celestialBody.getDisplayName(), isSun, size, texturePath);
+        return celestialBody;
+    }
+
+    /**
      * Shows general help for all celestial commands.
      */
     private static int showGeneralHelp(CommandContext<CommandSourceStack> context) {
@@ -780,6 +962,8 @@ public class CelestialCommand {
             Component.literal("§e/celestial make <name> <size> <texture> [options...]§f - Create a celestial body"), false);
         context.getSource().sendSuccess(() ->
             Component.literal("§e/celestial spawnsolar§f - Spawn a complete solar system at your location"), false);
+        context.getSource().sendSuccess(() ->
+            Component.literal("§e/celestial spawntestobject§f - Spawn a test OBJ model celestial body"), false);
         context.getSource().sendSuccess(() ->
             Component.literal("§e/celestial list§f - List all celestial bodies in current dimension"), false);
         context.getSource().sendSuccess(() ->
@@ -804,6 +988,8 @@ public class CelestialCommand {
                 case "spawn":
                 case "spawnsolar":
                     return showSpawnSolarHelp(context);
+                case SPAWN_TEST_OBJECT_COMMAND:
+                    return showSpawnTestObjectHelp(context);
                 case LIST_COMMAND:
                     return showListHelp(context);
                 case REMOVE_COMMAND:
@@ -966,6 +1152,57 @@ public class CelestialCommand {
             Component.literal("  §7/celestial remove Sun"), false);
         context.getSource().sendSuccess(() ->
             Component.literal("  §7/celestial remove Mars (removes first body containing 'Mars')"), false);
+        return 1;
+    }
+
+    /**
+     * Shows help for the spawn test object command.
+     */
+    private static int showSpawnTestObjectHelp(CommandContext<CommandSourceStack> context) {
+        context.getSource().sendSuccess(() ->
+            Component.literal("§6=== Spawn Test Object Command Help ==="), false);
+        context.getSource().sendSuccess(() ->
+            Component.literal("§eSyntax:§f /celestial spawntestobject [size]"), false);
+        context.getSource().sendSuccess(() ->
+            Component.literal(""), false);
+        context.getSource().sendSuccess(() ->
+            Component.literal("§eDescription:"), false);
+        context.getSource().sendSuccess(() ->
+            Component.literal("  Spawns a test celestial body at your current location"), false);
+        context.getSource().sendSuccess(() ->
+            Component.literal("  Creates a planet using the OBJ model system with interstellar:planetbase.png texture"), false);
+        context.getSource().sendSuccess(() ->
+            Component.literal("  Useful for testing OBJ model rendering and celestial body systems"), false);
+        context.getSource().sendSuccess(() ->
+            Component.literal(""), false);
+        context.getSource().sendSuccess(() ->
+            Component.literal("§eParameters:"), false);
+        context.getSource().sendSuccess(() ->
+            Component.literal("  §b[size]§f - Size of the celestial body (1-1000, default: 25)"), false);
+        context.getSource().sendSuccess(() ->
+            Component.literal(""), false);
+        context.getSource().sendSuccess(() ->
+            Component.literal("§eFeatures:"), false);
+        context.getSource().sendSuccess(() ->
+            Component.literal("  §7• Uses OBJ model system (planet.obj)"), false);
+        context.getSource().sendSuccess(() ->
+            Component.literal("  §7• interstellar:planetbase.png texture"), false);
+        context.getSource().sendSuccess(() ->
+            Component.literal("  §7• Configurable size for testing"), false);
+        context.getSource().sendSuccess(() ->
+            Component.literal("  §7• Planet type (not a sun)"), false);
+        context.getSource().sendSuccess(() ->
+            Component.literal("  §7• No orbital motion"), false);
+        context.getSource().sendSuccess(() ->
+            Component.literal(""), false);
+        context.getSource().sendSuccess(() ->
+            Component.literal("§eExamples:"), false);
+        context.getSource().sendSuccess(() ->
+            Component.literal("  §7/celestial spawntestobject"), false);
+        context.getSource().sendSuccess(() ->
+            Component.literal("  §7/celestial spawntestobject 50"), false);
+        context.getSource().sendSuccess(() ->
+            Component.literal("  §7/celestial spawntestobject 100"), false);
         return 1;
     }
 }
