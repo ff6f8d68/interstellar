@@ -3,27 +3,32 @@ loaderVersion = "${loader_version_range}"
 license = "${mod_license}"
 
 [[mods]]
-modId = "${mod_id}"
-version = "${mod_version}"
-displayName = "${mod_name}"
+modId = "ar2"
+version = "1.0.0"
+displayName = "advanced rocketry 2"
 authors = "hexagon"
-description = '''my space mod'''
-logoFile = "assets/interstellar/textures/icon.png"
+description = ''''''
+logoFile = "icon.png"
+[[mods]]
 
-[[dependencies."${mod_id}"]]
+modId="noodleengine"
+
+version="1.0.0"
+
+displayName="noodle engine"
+authors="noodlegamer76"
+
+# The description text for the mod (multi line!) (#mandatory)
+description=''''''
+
+[[dependencies."ar2"]]
 modId = "forge"
 mandatory = true
 versionRange = "${forge_version_range}"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies."${mod_id}"]]
-modId = "beyondoxygen"
-mandatory = false
-ordering = "NONE"
-side = "BOTH"
-
-[[dependencies."${mod_id}"]]
+[[dependencies."ar2"]]
 modId = "minecraft"
 mandatory = true
 versionRange = "${minecraft_version_range}"
