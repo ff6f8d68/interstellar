@@ -1,0 +1,9 @@
+{
+  "loader": "forge:obj",
+  "model": "ar2:models/block/models/advrocketmotor.obj",
+  "flip_v": false,
+  "textures": {
+    "particle": "ar2:block/advcombustion",
+    "texture0": "ar2:block/advcombustion"
+  }
+}

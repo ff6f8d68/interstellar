@@ -9,17 +9,7 @@ displayName = "advanced rocketry 2"
 authors = "hexagon"
 description = ''''''
 logoFile = "icon.png"
-[[mods]]
 
-modId="noodleengine"
-
-version="1.0.0"
-
-displayName="noodle engine"
-authors="noodlegamer76"
-
-# The description text for the mod (multi line!) (#mandatory)
-description=''''''
 
 [[dependencies."ar2"]]
 modId = "forge"

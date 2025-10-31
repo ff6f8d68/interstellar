@@ -1,0 +1,9 @@
+{
+  "loader": "forge:obj",
+  "model": "ar2:models/observatory.obj",
+  "flip_v": false,
+  "textures": {
+    "particle": "ar2:block/observatory",
+    "texture0": "ar2:block/observatory"
+  }
+}
