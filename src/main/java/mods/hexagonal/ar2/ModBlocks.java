@@ -20,7 +20,7 @@ public class ModBlocks {
     // ---------------------------
     // Blocks & Items
     // ---------------------------
-
+    /*
     public static final RegistryObject<Block> CHEMICALREACTOR =
             BLOCKS.register("chemicalreactor",
                     Chemicalreactor::new
@@ -31,7 +31,7 @@ public class ModBlocks {
                     () -> new BlockItem(CHEMICALREACTOR.get(),
                             new Item.Properties())
             );
-
+    */
     public static final RegistryObject<Block> SAWBLADE =
             BLOCKS.register("sawblade",
                     Sawblade::new
@@ -42,7 +42,7 @@ public class ModBlocks {
                     () -> new BlockItem(SAWBLADE.get(),
                             new Item.Properties())
             );
-
+    /*
     public static final RegistryObject<Block> WARPCORE =
             BLOCKS.register("warpcore",
                     Warpcore::new
@@ -64,7 +64,7 @@ public class ModBlocks {
                     () -> new BlockItem(ELECTROLYSER.get(),
                             new Item.Properties())
             );
-
+      */
     public static final RegistryObject<Block> BOTTOMTANK =
             BLOCKS.register("bottomtank",
                     Bottomtank::new
@@ -75,7 +75,7 @@ public class ModBlocks {
                     () -> new BlockItem(BOTTOMTANK.get(),
                             new Item.Properties())
             );
-
+    /*
     public static final RegistryObject<Block> CRYSTALLISER =
             BLOCKS.register("crystalliser",
                     Crystalliser::new
@@ -130,7 +130,7 @@ public class ModBlocks {
                     () -> new BlockItem(SOLAR_ARRAY.get(),
                             new Item.Properties())
             );
-
+    */
     public static final RegistryObject<Block> MIDDLETANK =
             BLOCKS.register("middletank",
                     Middletank::new
@@ -141,7 +141,7 @@ public class ModBlocks {
                     () -> new BlockItem(MIDDLETANK.get(),
                             new Item.Properties())
             );
-
+    /*
     public static final RegistryObject<Block> TERRAFORMERATM =
             BLOCKS.register("terraformeratm",
                     Terraformeratm::new
@@ -163,7 +163,7 @@ public class ModBlocks {
                     () -> new BlockItem(TEST.get(),
                             new Item.Properties())
             );
-
+    */
     public static final RegistryObject<Block> ROCKETMOTOR =
             BLOCKS.register("rocketmotor",
                     Rocketmotor::new
@@ -174,7 +174,7 @@ public class ModBlocks {
                     () -> new BlockItem(ROCKETMOTOR.get(),
                             new Item.Properties())
             );
-
+    /*
     public static final RegistryObject<Block> BIOMESCANNER =
             BLOCKS.register("biomescanner",
                     Biomescanner::new
@@ -196,7 +196,7 @@ public class ModBlocks {
                     () -> new BlockItem(ASTROBODYDATAPROCESSOR.get(),
                             new Item.Properties())
             );
-
+    */
     public static final RegistryObject<Block> ADVBIPROPELLANTROCKETMOTOR =
             BLOCKS.register("advbipropellantrocketmotor",
                     Advbipropellantrocketmotor::new
@@ -207,7 +207,7 @@ public class ModBlocks {
                     () -> new BlockItem(ADVBIPROPELLANTROCKETMOTOR.get(),
                             new Item.Properties())
             );
-
+    /*
     public static final RegistryObject<Block> CENTRIFUGE =
             BLOCKS.register("centrifuge",
                     Centrifuge::new
@@ -251,7 +251,7 @@ public class ModBlocks {
                     () -> new BlockItem(PRECISIONLASERETCHER.get(),
                             new Item.Properties())
             );
-
+    */
     public static final RegistryObject<Block> ADVROCKETMOTOR =
             BLOCKS.register("advrocketmotor",
                     Advrocketmotor::new
@@ -284,7 +284,7 @@ public class ModBlocks {
                     () -> new BlockItem(ENDTANK.get(),
                             new Item.Properties())
             );
-
+    /*
     public static final RegistryObject<Block> ORBITALLASERDRILL =
             BLOCKS.register("orbitallaserdrill",
                     Orbitallaserdrill::new
@@ -328,7 +328,7 @@ public class ModBlocks {
                     () -> new BlockItem(PRECISIONASSEMBLER.get(),
                             new Item.Properties())
             );
-
+    */
     public static final RegistryObject<Block> HOVERCRAFT =
             BLOCKS.register("hovercraft",
                     Hovercraft::new
@@ -339,7 +339,7 @@ public class ModBlocks {
                     () -> new BlockItem(HOVERCRAFT.get(),
                             new Item.Properties())
             );
-
+    /*
     public static final RegistryObject<Block> CUTTINGMACHINE =
             BLOCKS.register("cuttingmachine",
                     Cuttingmachine::new
@@ -350,7 +350,7 @@ public class ModBlocks {
                     () -> new BlockItem(CUTTINGMACHINE.get(),
                             new Item.Properties())
             );
-
+    */
     public static final RegistryObject<Block> NUCLEARROCKETMOTOR =
             BLOCKS.register("nuclearrocketmotor",
                     Nuclearrocketmotor::new
@@ -361,7 +361,7 @@ public class ModBlocks {
                     () -> new BlockItem(NUCLEARROCKETMOTOR.get(),
                             new Item.Properties())
             );
-
+    /*
     public static final RegistryObject<Block> RAILGUN =
             BLOCKS.register("railgun",
                     Railgun::new
@@ -394,5 +394,5 @@ public class ModBlocks {
                     () -> new BlockItem(LATHE.get(),
                             new Item.Properties())
             );
-
+    */
 }

@@ -1,6 +1,6 @@
 # Blender v2.79 (sub 0) OBJ File: 'black_hole_generator.blend'
 # www.blender.org
-mtllib black_hole_generator.mtl
+mtllib blackholegenerator.mtl
 o Cube_Cube.012
 v -0.062500 -3.500000 0.625000
 v -0.062500 -1.500000 0.625000

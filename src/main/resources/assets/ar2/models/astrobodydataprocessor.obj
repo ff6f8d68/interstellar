@@ -1,6 +1,6 @@
 # Blender v2.79 (sub 0) OBJ File: 'astrobody_data_processor.blend'
 # www.blender.org
-mtllib astrobody_data_processor.mtl
+mtllib astrobodydataprocessor.mtl
 o Cube
 v 1.937500 0.250000 2.000000
 v 1.937500 0.875000 2.000000

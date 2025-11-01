@@ -1,6 +1,6 @@
 # Blender v2.79 (sub 0) OBJ File: 'precision_assembler.blend'
 # www.blender.org
-mtllib precision_assembler.mtl
+mtllib precisionassembler.mtl
 o Hull
 v 2.062500 1.125000 3.812500
 v 2.062500 2.750000 3.812500

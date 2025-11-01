@@ -1,6 +1,6 @@
 # Blender v2.79 (sub 0) OBJ File: 'rolling_machine.blend'
 # www.blender.org
-mtllib rolling_machine.mtl
+mtllib rollingmachine.mtl
 o roller_3
 v 0.000000 0.250000 2.500000
 v 0.000000 0.250000 4.500000

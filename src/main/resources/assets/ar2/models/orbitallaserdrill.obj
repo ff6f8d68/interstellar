@@ -1,6 +1,6 @@
 # Blender v2.79 (sub 0) OBJ File: 'orbital_laser_drill.blend'
 # www.blender.org
-mtllib orbital_laser_drill.mtl
+mtllib orbitallaserdrill.mtl
 o Hull
 v 0.000000 0.000000 3.750000
 v 0.000000 2.000000 3.750000

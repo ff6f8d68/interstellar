@@ -1,6 +1,6 @@
 # Blender v2.79 (sub 0) OBJ File: 'precision_laser_engraver.blend'
 # www.blender.org
-mtllib precision_laser_engraver.mtl
+mtllib precisionlaserengraver.mtl
 o Laser
 v -1.250000 1.562500 -1.750000
 v -1.250000 2.187500 -1.750000
