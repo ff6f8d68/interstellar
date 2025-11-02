@@ -6,7 +6,6 @@ import net.minecraft.core.particles.SimpleParticleType;
 
 public class VFX extends TextureSheetParticle {
 
-    // --- Add color fields ---
     protected final float r;
     protected final float g;
     protected final float b;
@@ -25,12 +24,11 @@ public class VFX extends TextureSheetParticle {
         this.lifetime = 40;
         this.gravity = 0.0f;
 
-        // Store color
         this.r = r;
         this.g = g;
         this.b = b;
 
-        // Apply initial color
+        // Set initial color
         this.rCol = r;
         this.gCol = g;
         this.bCol = b;
@@ -39,8 +37,8 @@ public class VFX extends TextureSheetParticle {
     @Override
     public void tick() {
         super.tick();
-        // fade out
         this.alpha = 1.0f - ((float) this.age / this.lifetime);
+
     }
 
     @Override
@@ -48,7 +46,7 @@ public class VFX extends TextureSheetParticle {
         return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
-    // --- Factory with color parameters ---
+    // --- Factory ---
     public static class Factory implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet sprites;
         private final float r, g, b;

@@ -1,7 +1,7 @@
 package mods.hexagonal.ar2.VFX;
 
 import mods.hexagonal.ar2.ModParticles;
-import mods.hexagonal.ar2.particles.VFXParticleOptions;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 
 import java.util.Random;
@@ -15,14 +15,12 @@ public class VFXthrust {
         double offsetY = (RANDOM.nextDouble() - 0.5) * 0.2;
         double offsetZ = (RANDOM.nextDouble() - 0.5) * 0.2;
 
-        // Yellow thrust
-        world.addParticle(new VFXParticleOptions(1.0f, 0.9f, 0.2f),
+        // Spawn yellow thrust wisp
+        world.addParticle(ModParticles.VFX.get(),
                 x + offsetX, y + offsetY, z + offsetZ,
                 0, 0, 0);
 
-        // Gray smoke
-        world.addParticle(new VFXParticleOptions(0.5f, 0.5f, 0.5f),
-                x + offsetX, y + offsetY, z + offsetZ,
-                0, 0, 0);
+        // For gray smoke, you can register a separate factory with gray RGB
+        // or spawn it separately with a different particle type if needed
     }
 }
