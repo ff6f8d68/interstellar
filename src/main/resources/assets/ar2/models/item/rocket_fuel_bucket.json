@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "ar2:item/rocket_fuel_bucket"
+  }
+}

@@ -2,8 +2,11 @@ package mods.hexagonal.ar2;
 
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -16,7 +19,17 @@ public class ModBlocks {
 
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, ar2.MOD_ID);
-
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
+            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, ar2.MOD_ID);
+    public static final RegistryObject<BlockEntityType<TankBlockEntity>> TANK =
+            BLOCK_ENTITIES.register("tank",
+                    () -> BlockEntityType.Builder.of(TankBlockEntity::new,
+                            ModBlocks.TOPTANK.get(),
+                            ModBlocks.MIDDLETANK.get(),
+                            ModBlocks.BOTTOMTANK.get()
+                            // optionally add connectable blocks here if they also need the BE
+                    ).build(null)
+            );
     // ---------------------------
     // Blocks & Items
     // ---------------------------
@@ -152,18 +165,21 @@ public class ModBlocks {
                     () -> new BlockItem(TERRAFORMERATM.get(),
                             new Item.Properties())
             );
-
+    */
     public static final RegistryObject<Block> TEST =
             BLOCKS.register("test",
                     Test::new
             );
+    public static final RegistryObject<BlockEntityType<TestBlockEntity>> TEST_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("test_block_entity",
+                    () -> BlockEntityType.Builder.of(TestBlockEntity::new, TEST.get()).build(null));
 
     public static final RegistryObject<Item> TEST_ITEM =
             ITEMS.register("test",
                     () -> new BlockItem(TEST.get(),
                             new Item.Properties())
             );
-    */
+
     public static final RegistryObject<Block> ROCKETMOTOR =
             BLOCKS.register("rocketmotor",
                     Rocketmotor::new
@@ -361,6 +377,49 @@ public class ModBlocks {
                     () -> new BlockItem(NUCLEARROCKETMOTOR.get(),
                             new Item.Properties())
             );
+
+    // Rocket Fuel Fluid Blocks
+    public static final RegistryObject<Block> ROCKET_FUEL_BLOCK =
+            BLOCKS.register("rocket_fuel",
+                    () -> new LiquidBlock(Fluids.ROCKET_FUEL, Block.Properties.of().noCollission().strength(100f).noLootTable())
+            );
+
+    public static final RegistryObject<Block> ADVANCED_ROCKET_FUEL_BLOCK =
+            BLOCKS.register("advanced_rocket_fuel",
+                    () -> new LiquidBlock(Fluids.ADVANCED_ROCKET_FUEL, Block.Properties.of().noCollission().strength(100f).noLootTable())
+            );
+
+    public static final RegistryObject<Block> BIPROPELLANT_ROCKET_FUEL_BLOCK =
+            BLOCKS.register("bipropellant_rocket_fuel",
+                    () -> new LiquidBlock(Fluids.BIPROPELLANT_ROCKET_FUEL, Block.Properties.of().noCollission().strength(100f).noLootTable())
+            );
+
+    public static final RegistryObject<Block> NUCLEAR_ROCKET_FUEL_BLOCK =
+            BLOCKS.register("nuclear_rocket_fuel",
+                    () -> new LiquidBlock(Fluids.NUCLEAR_ROCKET_FUEL, Block.Properties.of().noCollission().strength(100f).noLootTable())
+            );
+
+    // Rocket Fuel Buckets
+    public static final RegistryObject<Item> ROCKET_FUEL_BUCKET =
+            ITEMS.register("rocket_fuel_bucket",
+                    () -> new BucketItem(Fluids.ROCKET_FUEL, new Item.Properties().stacksTo(1))
+            );
+
+    public static final RegistryObject<Item> ADVANCED_ROCKET_FUEL_BUCKET =
+            ITEMS.register("advanced_rocket_fuel_bucket",
+                    () -> new BucketItem(Fluids.ADVANCED_ROCKET_FUEL, new Item.Properties().stacksTo(1))
+            );
+
+    public static final RegistryObject<Item> BIPROPELLANT_ROCKET_FUEL_BUCKET =
+            ITEMS.register("bipropellant_rocket_fuel_bucket",
+                    () -> new BucketItem(Fluids.BIPROPELLANT_ROCKET_FUEL, new Item.Properties().stacksTo(1))
+            );
+
+    public static final RegistryObject<Item> NUCLEAR_ROCKET_FUEL_BUCKET =
+            ITEMS.register("nuclear_rocket_fuel_bucket",
+                    () -> new BucketItem(Fluids.NUCLEAR_ROCKET_FUEL, new Item.Properties().stacksTo(1))
+            );
+
     /*
     public static final RegistryObject<Block> RAILGUN =
             BLOCKS.register("railgun",

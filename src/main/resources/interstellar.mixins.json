@@ -1,8 +1,11 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "mods.hexagonal.ar2.mixin",
+  "package": "mods.hexagonal.ar2.mixins",
   "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "ServerShipObjectWorldAccessor"
+  ],
   "injectors": {
     "defaultRequire": 1
   }
