@@ -16,16 +16,17 @@ public class ar2 {
     public static final String MOD_ID = "ar2";
 
     public ar2() {
-        Registry.PARTICLES.register(FMLJavaModLoadingContext.get().getModEventBus());
-        Registry.FLUID_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
-        Fluids.FLUIDS.register(FMLJavaModLoadingContext.get().getModEventBus());
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        ModBlocks.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        ModBlocks.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        ModParticles.PARTICLES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        
+        Registry.PARTICLES.register(modEventBus);
+        Registry.FLUID_TYPES.register(modEventBus);
+        Fluids.FLUIDS.register(modEventBus);
+        ModBlocks.BLOCKS.register(modEventBus);
+        ModBlocks.ITEMS.register(modEventBus);
+        ModParticles.PARTICLES.register(modEventBus);
         ModCreativeTabs.register(modEventBus);
         modEventBus.addListener(this::registerParticles);
-        BLOCK_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        BLOCK_ENTITIES.register(modEventBus);
         MinecraftForge.EVENT_BUS.addListener(ModCommands::register);
         MinecraftForge.EVENT_BUS.addListener(ModEvents::onBlockRightClick);
         modEventBus.addListener(this::setup);

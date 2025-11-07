@@ -156,7 +156,7 @@ public class TeleportHandler {
 		MinecraftServer server = ValkyrienSkiesMod.getCurrentServer();
 		if (server == null)
 			return null;
-		return server.getLevel(ResourceKey.create(Registries.DIMENSION, new ResourceLocation(dimensionString)));
+		return server.getLevel(ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse(dimensionString)));
 	}
 
 	public static Vector3d toDegrees(Vector3d radianVec) {
