@@ -25,6 +25,7 @@ plugins {
     id 'net.minecraftforge.gradle' version '[6.0.16,6.2)'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'org.spongepowered.mixin' version '0.7.+'
+    id 'maven-publish'
 }
 
 apply plugin: 'org.spongepowered.mixin'
@@ -349,6 +350,23 @@ task moveFiles {
             inputFile.delete() // Delete the source file (inputFile) after moving
         } else {
             println "Input or output ZIP file not found."
+        }
+    }
+}
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/ff6f8d68/interstellar")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+                password = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
+            }
         }
     }
 }
