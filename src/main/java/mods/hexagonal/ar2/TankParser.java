@@ -87,7 +87,8 @@ public class TankParser {
         Block block = world.getBlockState(pos).getBlock();
         if (!isConnectable(block) && !(block instanceof mods.hexagonal.ar2.blocks.Toptank) 
             && !(block instanceof mods.hexagonal.ar2.blocks.Middletank)
-            && !(block instanceof mods.hexagonal.ar2.blocks.Bottomtank)) {
+            && !(block instanceof mods.hexagonal.ar2.blocks.Bottomtank)
+            && !(block instanceof mods.hexagonal.ar2.blocks.BipropellantTank)) {
             return;
         }
 

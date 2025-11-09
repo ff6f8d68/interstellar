@@ -11,6 +11,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import mods.hexagonal.ar2.blocks.*;
+import mods.hexagonal.ar2.fluids.ModFluids;
 
 public class ModBlocks {
 
@@ -23,12 +24,27 @@ public class ModBlocks {
             DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, ar2.MOD_ID);
     public static final RegistryObject<BlockEntityType<TankBlockEntity>> TANK =
             BLOCK_ENTITIES.register("tank",
-                    () -> BlockEntityType.Builder.of(TankBlockEntity::new,
-                            ModBlocks.TOPTANK.get(),
-                            ModBlocks.MIDDLETANK.get(),
-                            ModBlocks.BOTTOMTANK.get()
-                            // optionally add connectable blocks here if they also need the BE
-                    ).build(null)
+                    () -> {
+                        // Create a mutable holder for the type to avoid self-reference
+                        java.util.concurrent.atomic.AtomicReference<BlockEntityType<TankBlockEntity>> typeHolder = 
+                            new java.util.concurrent.atomic.AtomicReference<>();
+                        
+                        BlockEntityType<TankBlockEntity> type = BlockEntityType.Builder.of((pos, state) -> {
+                            BlockEntityType<TankBlockEntity> t = typeHolder.get();
+                            if (t == null) {
+                                throw new IllegalStateException("TankBlockEntity type not initialized");
+                            }
+                            return new TankBlockEntity(t, pos, state);
+                        },
+                                ModBlocks.TOPTANK.get(),
+                                ModBlocks.MIDDLETANK.get(),
+                                ModBlocks.BOTTOMTANK.get(),
+                                ModBlocks.BIPROPELLANT_TANK.get()
+                        ).build(null);
+                        
+                        typeHolder.set(type);
+                        return type;
+                    }
             );
     // ---------------------------
     // Blocks & Items
@@ -378,46 +394,68 @@ public class ModBlocks {
                             new Item.Properties())
             );
 
+    public static final RegistryObject<Block> BIPROPELLANT_TANK =
+            BLOCKS.register("bipropellant_tank",
+                    BipropellantTank::new
+            );
+
+    public static final RegistryObject<Item> BIPROPELLANT_TANK_ITEM =
+            ITEMS.register("bipropellant_tank",
+                    () -> new BlockItem(BIPROPELLANT_TANK.get(),
+                            new Item.Properties())
+            );
+
+    public static final RegistryObject<Block> NUCLEAR_GENERATOR =
+            BLOCKS.register("nuclear_generator",
+                    NuclearGenerator::new
+            );
+
+    public static final RegistryObject<Item> NUCLEAR_GENERATOR_ITEM =
+            ITEMS.register("nuclear_generator",
+                    () -> new BlockItem(NUCLEAR_GENERATOR.get(),
+                            new Item.Properties())
+            );
+
     // Rocket Fuel Fluid Blocks
     public static final RegistryObject<Block> ROCKET_FUEL_BLOCK =
             BLOCKS.register("rocket_fuel",
-                    () -> new LiquidBlock(Fluids.ROCKET_FUEL, Block.Properties.of().noCollission().strength(100f).noLootTable())
+                    () -> new LiquidBlock(ModFluids.SOURCE_ROCKET_FUEL, Block.Properties.of().noCollission().strength(100f).noLootTable())
             );
 
     public static final RegistryObject<Block> ADVANCED_ROCKET_FUEL_BLOCK =
             BLOCKS.register("advanced_rocket_fuel",
-                    () -> new LiquidBlock(Fluids.ADVANCED_ROCKET_FUEL, Block.Properties.of().noCollission().strength(100f).noLootTable())
+                    () -> new LiquidBlock(ModFluids.SOURCE_ADVANCED_ROCKET_FUEL, Block.Properties.of().noCollission().strength(100f).noLootTable())
             );
 
     public static final RegistryObject<Block> BIPROPELLANT_ROCKET_FUEL_BLOCK =
             BLOCKS.register("bipropellant_rocket_fuel",
-                    () -> new LiquidBlock(Fluids.BIPROPELLANT_ROCKET_FUEL, Block.Properties.of().noCollission().strength(100f).noLootTable())
+                    () -> new LiquidBlock(ModFluids.SOURCE_BIPROPELLANT_ROCKET_FUEL, Block.Properties.of().noCollission().strength(100f).noLootTable())
             );
 
     public static final RegistryObject<Block> NUCLEAR_ROCKET_FUEL_BLOCK =
             BLOCKS.register("nuclear_rocket_fuel",
-                    () -> new LiquidBlock(Fluids.NUCLEAR_ROCKET_FUEL, Block.Properties.of().noCollission().strength(100f).noLootTable())
+                    () -> new LiquidBlock(ModFluids.SOURCE_NUCLEAR_ROCKET_FUEL, Block.Properties.of().noCollission().strength(100f).noLootTable())
             );
 
     // Rocket Fuel Buckets
     public static final RegistryObject<Item> ROCKET_FUEL_BUCKET =
             ITEMS.register("rocket_fuel_bucket",
-                    () -> new BucketItem(Fluids.ROCKET_FUEL, new Item.Properties().stacksTo(1))
+                    () -> new BucketItem(ModFluids.SOURCE_ROCKET_FUEL, new Item.Properties().stacksTo(1))
             );
 
     public static final RegistryObject<Item> ADVANCED_ROCKET_FUEL_BUCKET =
             ITEMS.register("advanced_rocket_fuel_bucket",
-                    () -> new BucketItem(Fluids.ADVANCED_ROCKET_FUEL, new Item.Properties().stacksTo(1))
+                    () -> new BucketItem(ModFluids.SOURCE_ADVANCED_ROCKET_FUEL, new Item.Properties().stacksTo(1))
             );
 
     public static final RegistryObject<Item> BIPROPELLANT_ROCKET_FUEL_BUCKET =
             ITEMS.register("bipropellant_rocket_fuel_bucket",
-                    () -> new BucketItem(Fluids.BIPROPELLANT_ROCKET_FUEL, new Item.Properties().stacksTo(1))
+                    () -> new BucketItem(ModFluids.SOURCE_BIPROPELLANT_ROCKET_FUEL, new Item.Properties().stacksTo(1))
             );
 
     public static final RegistryObject<Item> NUCLEAR_ROCKET_FUEL_BUCKET =
             ITEMS.register("nuclear_rocket_fuel_bucket",
-                    () -> new BucketItem(Fluids.NUCLEAR_ROCKET_FUEL, new Item.Properties().stacksTo(1))
+                    () -> new BucketItem(ModFluids.SOURCE_NUCLEAR_ROCKET_FUEL, new Item.Properties().stacksTo(1))
             );
 
     /*

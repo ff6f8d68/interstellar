@@ -45,6 +45,7 @@ configurations {
 
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(17)
+    modularity.inferModulePath = false
 }
 
 minecraft {
@@ -105,14 +106,19 @@ minecraft {
             // You can set various levels here.
             // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             property 'forge.logging.console.level', 'debug'
-
+            mods {
+                "valkyrienskies" {
+                    file "run/mods/valkyrienskies.jar"
+                }
+                "curios" {
+                    file "run/mods/Curios.jar"
+                }
+            }
             mods {
                 "${mod_id}" {
                     source sourceSets.main
                 }
             }
-
-
         }
 
         client {
@@ -200,30 +206,13 @@ dependencies {
     implementation "org.valkyrienskies.core:util:$vs_core_version"
     implementation fg.deobf("org.valkyrienskies:valkyrienskies-120-forge:$vs2_version")
     implementation fg.deobf("thedarkcolour:kotlinforforge:$kotlin_version")
+
+
+
     implementation fg.deobf("team.lodestar.lodestone:lodestone:1.20.1-1.4.2.62")
     //1.18.2 Example: implementation fg.deobf("team.lodestar.lodestone:lodestone:1.18.2-1.4.1.435")
     //1.19.2 Example: implementation fg.deobf("team.lodestar.lodestone:lodestone:1.19.2-1.4.2.83")
     //1.20.1 Example: implementation fg.deobf("team.lodestar.lodestone:lodestone:1.20.1-1.4.2.62")
-    // Ensure jgltf implementation jars are on the compile+runtime classpath so the GltfModelReader is available at runtime
-    shadowLibs 'de.javagl:jgltf-model:2.0.4'
-    shadowLibs 'de.javagl:jgltf-impl-v2:2.0.4'
-
-    minecraftLibrary 'de.javagl:jgltf-model:2.0.4'
-    minecraftLibrary 'de.javagl:jgltf-impl-v2:2.0.4'
-
-
-    // remove duplicate minecraftLibrary/shade declarations for these artifacts to avoid confusion
-    // minecraftLibrary 'de.javagl:jgltf-model:2.0.4'
-    // minecraftLibrary 'de.javagl:jgltf-impl-v2:2.0.4'
-    // shade("de.javagl:jgltf-model:2.0.4")
-    // shade("de.javagl:jgltf-impl-v2:2.0.4")
-    implementation("com.github.stephengold:Libbulletjme-Windows64:22.0.3")
-    implementation("io.github.electrostat-lab:snaploader:1.0.0-stable")
-
-    // === Native libraries (runtime only) ===
-    runtimeOnly("com.github.stephengold:Libbulletjme-Windows64:22.0.3:SpDebug")
-    runtimeOnly("com.github.stephengold:Libbulletjme-Linux64:22.0.3:SpDebug")
-    runtimeOnly("com.github.stephengold:Libbulletjme-MacOSX64:22.0.3:SpDebug")
 
     // === JVM libraries ===
 
