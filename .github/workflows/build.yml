@@ -42,7 +42,6 @@ jobs:
 
           echo "DevBuild version: $VERSION"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
