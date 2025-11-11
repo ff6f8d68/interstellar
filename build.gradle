@@ -332,15 +332,6 @@ tasks.withType(JavaCompile).configureEach {
 test {
     useJUnitPlatform()
 }
-shadowJar {
-    archiveClassifier.set('shadow')
-    configurations = [project.configurations.shadowLibs]
-
-    // relocate for mod compatibility
-    relocate 'com.github.stephengold', 'com.noodlegamer76.noodleengine.libs.stephengold'
-    relocate 'io.github.electrostat', 'com.noodlegamer76.noodleengine.libs.electrostat'
-    relocate 'de.javagl', 'com.noodlegamer76.noodleengine.de.javagl'
-}
 task moveFiles {
     doLast {
         // Input and output files based on the shadowJar and jar archive file names
@@ -410,7 +401,6 @@ publishing {
 }
 
 build {
-    dependsOn shadowJar
     finalizedBy moveFiles
 }
 tasks.register("configurePublishing") {
