@@ -4,12 +4,19 @@ license = "${mod_license}"
 
 [[mods]]
 modId = "ar2"
-version = "1.0.0"
+version = "{mod_version}"
 displayName = "advanced rocketry 2"
-authors = "hexagon"
+authors = "nextlevel modding"
 description = ''''''
 logoFile = "icon.png"
 
+[[mods]]
+modId = "nlc"
+version = "1.0.0"
+displayName = "nextlevel core"
+authors = "nextlevel modding"
+description = ''''''
+logoFile = "nlc.png"
 
 [[dependencies."ar2"]]
 modId = "forge"

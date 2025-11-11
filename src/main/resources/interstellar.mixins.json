@@ -4,7 +4,7 @@
   "package": "mods.hexagonal.ar2.mixins",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "ServerShipObjectWorldAccessor"
+    "team.nextlevelmodding.ar2.mixins.ServerShipObjectWorldAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
