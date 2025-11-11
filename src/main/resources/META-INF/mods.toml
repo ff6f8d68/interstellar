@@ -4,11 +4,11 @@ license = "${mod_license}"
 
 [[mods]]
 modId = "ar2"
-version = "{mod_version}"
+version = "${mod_version}"
 displayName = "advanced rocketry 2"
 authors = "nextlevel modding"
 description = ''''''
-logoFile = "icon.png"
+logoFile = "logo.png"
 
 [[mods]]
 modId = "nlc"
