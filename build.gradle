@@ -372,3 +372,9 @@ tasks.named('processResources', ProcessResources).configure {
     }
 }
 
+tasks.computeDevBuildVersion {
+    dependsOn tasks.jar
+}
+tasks.withType(PublishToMavenRepository) {
+    dependsOn tasks.computeDevBuildVersion
+}
