@@ -37,35 +37,38 @@ ext {
 }
 
 if (useDevBuild) {
-    tasks.register("computeDevBuildVersion") {
-        dependsOn 'jar' // ensure jar exists
-        doLast {
-            def jarFile = tasks.named("jar").get().archiveFile.get().asFile
-            if (!jarFile.exists()) {
-                throw new GradleException("Jar file not found: $jarFile")
-            }
 
-            // SHA-256 hash
-            def hash = java.security.MessageDigest.getInstance("SHA-256")
-                    .digest(jarFile.bytes)
-                    .encodeHex()
-                    .toString()
-                    .substring(0, 8)
+    // 1. Compute dev build version BEFORE jar runs
+    def computeDevBuildVersion = {
+        def jarFile = file("build/libs/${mod_id}-${modVersionBase}.jar")
+        if (!jarFile.exists()) return modVersionBase
 
-            computedModVersion = "devbuild-${hash}"
-            println "Dev build version: $computedModVersion"
+        def hash = java.security.MessageDigest.getInstance("SHA-256")
+                .digest(jarFile.bytes)
+                .encodeHex()
+                .toString()
+                .substring(0, 8)
 
-            // Update project.version dynamically so archiveFileName uses it
-            version = computedModVersion
-
-            // Rename the jar file itself
-            def newJarFile = new File(jarFile.parentFile, "${base.archivesName.get()}-${computedModVersion}.jar")
-            jarFile.renameTo(newJarFile)
-        }
+        return "devbuild-${hash}".replaceAll("\\s+", "-")
     }
 
-    build.dependsOn 'computeDevBuildVersion'
+    // 2. Compute immediately during configuration
+    computedModVersion = computeDevBuildVersion()
+    version = computedModVersion
+    println "[DEVBUILD] Using version: $computedModVersion"
+
+    // 3. Make Gradle produce the correct file name
+    tasks.named("jar") {
+        archiveVersion.set(computedModVersion)
+    }
+
+
+    // 5. Ensure publishing uses the correct version
+    tasks.withType(PublishToMavenRepository) {
+        dependsOn tasks.named("jar")
+    }
 }
+
 base {
     archivesName = mod_id
 }
@@ -355,8 +358,3 @@ tasks.named('processResources', ProcessResources).configure {
         ])
     }
 }
-
-tasks.withType(PublishToMavenRepository) {
-    dependsOn tasks.computeDevBuildVersion
-}
-jar.finalizedBy('computeDevBuildVersion')
