@@ -4,7 +4,7 @@ license = "${mod_license}"
 
 [[mods]]
 modId = "ar2"
-version = "${mod_version}"
+version = "0.0.0-dev.${project.version}"
 displayName = "advanced rocketry VS"
 authors = "nextlevel modding"
 description = ''''''
