@@ -409,13 +409,27 @@ publishing {
             }
         }
     }
+    dependsOn configurePublishing
 }
 
 build {
     dependsOn shadowJar
     finalizedBy moveFiles
 }
-
+tasks.register("configurePublishing") {
+    dependsOn 'computeDevBuildVersion'
+    doLast {
+        publishing {
+            publications {
+                mavenJava(MavenPublication) {
+                    artifact(tasks.named('jar').get()) {
+                        version = providers.provider { useDevBuild ? computedModVersion : mod_version }.get()
+                    }
+                }
+            }
+        }
+    }
+}
 tasks.named('processResources', ProcessResources).configure {
     filesMatching('META-INF/mods.toml') {
         filter(org.apache.tools.ant.filters.ReplaceTokens, tokens: [
