@@ -393,7 +393,7 @@ task moveFiles {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            from components.java
+            artifact(tasks.jar) // explicitly publish only the jar task
         }
     }
     repositories {
