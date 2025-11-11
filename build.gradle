@@ -394,7 +394,16 @@ task moveFiles {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifact(tasks.jar) // explicitly publish only the jar task
+            // Explicitly use the jar task so we can set its version
+            artifact(tasks.named('jar').get()) {
+                // Override the version for this artifact
+                version = useDevBuild ? computedModVersion : mod_version
+            }
+
+            // Optional: override pom.version if needed
+            pom {
+                version = useDevBuild ? computedModVersion : mod_version
+            }
         }
     }
     repositories {
@@ -408,6 +417,7 @@ publishing {
         }
     }
 }
+
 build {
     dependsOn shadowJar
     finalizedBy moveFiles
