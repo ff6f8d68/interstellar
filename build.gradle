@@ -36,6 +36,7 @@ ext {
     useDevBuild = project.hasProperty('useDevBuild') && project.useDevBuild.toBoolean()
     modVersionBase = mod_version // from gradle.properties
     computedModVersion = modVersionBase
+    project.version = computedModVersion
 }
 
 if (useDevBuild) {
