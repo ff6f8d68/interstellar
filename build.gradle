@@ -409,7 +409,6 @@ publishing {
             }
         }
     }
-    dependsOn configurePublishing
 }
 
 build {
