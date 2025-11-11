@@ -5,17 +5,17 @@ license = "${mod_license}"
 [[mods]]
 modId = "ar2"
 version = "${mod_version}"
-displayName = "advanced rocketry 2"
+displayName = "advanced rocketry VS"
 authors = "nextlevel modding"
 description = ''''''
 logoFile = "logo.png"
 
 [[mods]]
 modId = "nlc"
-version = "1.0.0"
+version = "1.0.2"
 displayName = "nextlevel core"
 authors = "nextlevel modding"
-description = ''''''
+description = '''a modding util for nextlevel modding'''
 logoFile = "nlc.png"
 
 [[dependencies."ar2"]]

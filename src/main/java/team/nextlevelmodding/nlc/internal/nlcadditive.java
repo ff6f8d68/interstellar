@@ -1,4 +1,4 @@
-package team.nextlevelmodding.ar2.particles;
+package team.nextlevelmodding.nlc.internal;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -9,8 +9,9 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureManager;
+import team.nextlevelmodding.nlc.lib.nlcrendertype;
 
-public class ADDITIVERENDERTYPE {
+public class nlcadditive extends nlcrendertype {
     public static final ParticleRenderType ADDITIVE = new ParticleRenderType() {
         @Override
         public void begin(BufferBuilder builder, TextureManager manager) {
@@ -28,7 +29,7 @@ public class ADDITIVERENDERTYPE {
             RenderSystem.disableBlend();
         }
     };
-
-
-
+    static {
+        registerRenderType("ADDITIVE", ADDITIVE);
+    }
 }
