@@ -58,7 +58,7 @@ if (useDevBuild) {
             println "Dev build version: $computedModVersion"
 
             // Update project.version dynamically so archiveFileName uses it
-            project.version = computedModVersion
+            version = computedModVersion
 
             // Rename the jar file itself
             def newJarFile = new File(jarFile.parentFile, "${base.archivesName.get()}-${computedModVersion}.jar")
