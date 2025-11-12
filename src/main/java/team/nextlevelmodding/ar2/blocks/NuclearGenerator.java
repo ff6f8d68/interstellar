@@ -7,13 +7,18 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.MenuProvider;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class NuclearGenerator extends Block {
+public class NuclearGenerator extends Block implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
     public NuclearGenerator() {
@@ -24,6 +29,12 @@ public class NuclearGenerator extends Block {
                 .noOcclusion()
         );
         this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, net.minecraft.core.Direction.NORTH));
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
+        return new NuclearGeneratorBlockEntity(pPos, pState);
     }
 
     @Override
@@ -61,6 +72,13 @@ public class NuclearGenerator extends Block {
             } else {
                 pPlayer.addItem(emptyBucket);
             }
+            return net.minecraft.world.InteractionResult.SUCCESS;
+        }
+
+        // Open GUI
+        BlockEntity be = pLevel.getBlockEntity(pPos);
+        if (be instanceof MenuProvider menuProvider) {
+            pPlayer.openMenu(menuProvider);
             return net.minecraft.world.InteractionResult.SUCCESS;
         }
 

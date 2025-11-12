@@ -6,12 +6,18 @@ import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import team.nextlevelmodding.ar2.blocks.*;
 import team.nextlevelmodding.ar2.blocks.*;
 import team.nextlevelmodding.ar2.fluids.ModFluids;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.BlockPos;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.player.Inventory;
 
 public class ModBlocks {
 
@@ -22,6 +28,8 @@ public class ModBlocks {
             DeferredRegister.create(ForgeRegistries.ITEMS, ar2.MOD_ID);
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
             DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, ar2.MOD_ID);
+    public static final DeferredRegister<MenuType<?>> MENUS =
+            DeferredRegister.create(ForgeRegistries.MENU_TYPES, ar2.MOD_ID);
     public static final RegistryObject<BlockEntityType<TankBlockEntity>> TANK =
             BLOCK_ENTITIES.register("tank",
                     () -> {
@@ -39,7 +47,9 @@ public class ModBlocks {
                                 ModBlocks.TOPTANK.get(),
                                 ModBlocks.MIDDLETANK.get(),
                                 ModBlocks.BOTTOMTANK.get(),
-                                ModBlocks.BIPROPELLANT_TANK.get()
+                                ModBlocks.BIPROPELLANT_TOPTANK.get(),
+                                ModBlocks.BIPROPELLANT_MIDDLETANK.get(),
+                                ModBlocks.BIPROPELLANT_BOTTOMTANK.get()
                         ).build(null);
                         
                         typeHolder.set(type);
@@ -69,6 +79,16 @@ public class ModBlocks {
     public static final RegistryObject<Item> SAWBLADE_ITEM =
             ITEMS.register("sawblade",
                     () -> new BlockItem(SAWBLADE.get(),
+                            new Item.Properties())
+            );
+    public static final RegistryObject<Block> GUIDANCE_COMPUTER =
+            BLOCKS.register("guidancecomputer",
+                    Sawblade::new
+            );
+
+    public static final RegistryObject<Item> GUIDANCE_COMPUTER_ITEM =
+            ITEMS.register("guidancecomputer",
+                    () -> new BlockItem(GUIDANCE_COMPUTER.get(),
                             new Item.Properties())
             );
     /*
@@ -316,6 +336,39 @@ public class ModBlocks {
                     () -> new BlockItem(ENDTANK.get(),
                             new Item.Properties())
             );
+
+    public static final RegistryObject<Block> BIPROPELLANT_TOPTANK =
+            BLOCKS.register("bipropellant_toptank",
+                    BipropellantToptank::new
+            );
+
+    public static final RegistryObject<Item> BIPROPELLANT_TOPTANK_ITEM =
+            ITEMS.register("bipropellant_toptank",
+                    () -> new BlockItem(BIPROPELLANT_TOPTANK.get(),
+                            new Item.Properties())
+            );
+
+    public static final RegistryObject<Block> BIPROPELLANT_MIDDLETANK =
+            BLOCKS.register("bipropellant_middletank",
+                    BipropellantMiddletank::new
+            );
+
+    public static final RegistryObject<Item> BIPROPELLANT_MIDDLETANK_ITEM =
+            ITEMS.register("bipropellant_middletank",
+                    () -> new BlockItem(BIPROPELLANT_MIDDLETANK.get(),
+                            new Item.Properties())
+            );
+
+    public static final RegistryObject<Block> BIPROPELLANT_BOTTOMTANK =
+            BLOCKS.register("bipropellant_bottomtank",
+                    BipropellantBottomtank::new
+            );
+
+    public static final RegistryObject<Item> BIPROPELLANT_BOTTOMTANK_ITEM =
+            ITEMS.register("bipropellant_bottomtank",
+                    () -> new BlockItem(BIPROPELLANT_BOTTOMTANK.get(),
+                            new Item.Properties())
+            );
     /*
     public static final RegistryObject<Block> ORBITALLASERDRILL =
             BLOCKS.register("orbitallaserdrill",
@@ -394,16 +447,7 @@ public class ModBlocks {
                             new Item.Properties())
             );
 
-    public static final RegistryObject<Block> BIPROPELLANT_TANK =
-            BLOCKS.register("bipropellant_tank",
-                    BipropellantTank::new
-            );
 
-    public static final RegistryObject<Item> BIPROPELLANT_TANK_ITEM =
-            ITEMS.register("bipropellant_tank",
-                    () -> new BlockItem(BIPROPELLANT_TANK.get(),
-                            new Item.Properties())
-            );
 
     public static final RegistryObject<Block> NUCLEAR_GENERATOR =
             BLOCKS.register("nuclear_generator",
@@ -457,6 +501,18 @@ public class ModBlocks {
             ITEMS.register("nuclear_rocket_fuel_bucket",
                     () -> new BucketItem(ModFluids.SOURCE_NUCLEAR_ROCKET_FUEL, new Item.Properties().stacksTo(1))
             );
+
+    public static final RegistryObject<BlockEntityType<NuclearGeneratorBlockEntity>> NUCLEAR_GENERATOR_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("nuclear_generator_block_entity",
+                    () -> BlockEntityType.Builder.of(NuclearGeneratorBlockEntity::new, NUCLEAR_GENERATOR.get()).build(null));
+
+    public static final RegistryObject<MenuType<NuclearGeneratorMenu>> NUCLEAR_GENERATOR_MENU =
+            MENUS.register("nuclear_generator_menu",
+                    () -> IForgeMenuType.create((containerId, inventory, data) -> {
+                        BlockPos pos = data.readBlockPos();
+                        NuclearGeneratorBlockEntity blockEntity = (NuclearGeneratorBlockEntity) Minecraft.getInstance().level.getBlockEntity(pos);
+                        return new NuclearGeneratorMenu(containerId, inventory, blockEntity);
+                    }));
 
     /*
     public static final RegistryObject<Block> RAILGUN =

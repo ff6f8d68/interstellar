@@ -15,6 +15,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import static team.nextlevelmodding.ar2.ModBlocks.BLOCK_ENTITIES;
+import static team.nextlevelmodding.ar2.ModBlocks.MENUS;
+import team.nextlevelmodding.ar2.ModMenus;
 
 @Mod("ar2")
 public class ar2 {
@@ -32,6 +34,8 @@ public class ar2 {
         ModCreativeTabs.register(modEventBus);
         modEventBus.addListener(this::registerParticles);
         BLOCK_ENTITIES.register(modEventBus);
+        MENUS.register(modEventBus);
+        ModMenus.REGISTRY.register(modEventBus);
         MinecraftForge.EVENT_BUS.addListener(ModCommands::register);
         MinecraftForge.EVENT_BUS.addListener(ModEvents::onBlockRightClick);
         modEventBus.addListener(this::setup);
