@@ -1,12 +1,12 @@
 {
   "parent": "block/cube",
   "textures": {
-    "particle": "ar2:block/guidancecomputer",
     "down": "ar2:block/guidancecomputeraccesshatch",
     "up": "ar2:block/guidancecomputeraccesshatch",
     "north": "ar2:block/guidancecomputer",
-    "east": "ar2:block/guidancecomputer",
     "south": "ar2:block/guidancecomputer",
-    "west": "ar2:block/guidancecomputer"
+    "east": "ar2:block/guidancecomputer",
+    "west": "ar2:block/guidancecomputer",
+    "particle": "ar2:block/guidancecomputer"
   }
 }
