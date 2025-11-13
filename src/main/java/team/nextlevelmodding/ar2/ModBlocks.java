@@ -1,12 +1,13 @@
 package team.nextlevelmodding.ar2;
 
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.inventory.MenuType;
+import team.nextlevelmodding.ar2.ModMenus.*;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -14,6 +15,7 @@ import net.minecraftforge.registries.RegistryObject;
 import team.nextlevelmodding.ar2.blocks.*;
 import team.nextlevelmodding.ar2.blocks.*;
 import team.nextlevelmodding.ar2.fluids.ModFluids;
+import team.nextlevelmodding.ar2.items.LinkerItem;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.client.Minecraft;
@@ -28,8 +30,7 @@ public class ModBlocks {
             DeferredRegister.create(ForgeRegistries.ITEMS, ar2.MOD_ID);
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
             DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, ar2.MOD_ID);
-    public static final DeferredRegister<MenuType<?>> MENUS =
-            DeferredRegister.create(ForgeRegistries.MENU_TYPES, ar2.MOD_ID);
+
     public static final RegistryObject<BlockEntityType<TankBlockEntity>> TANK =
             BLOCK_ENTITIES.register("tank",
                     () -> {
@@ -502,17 +503,17 @@ public class ModBlocks {
                     () -> new BucketItem(ModFluids.SOURCE_NUCLEAR_ROCKET_FUEL, new Item.Properties().stacksTo(1))
             );
 
+    // Linker Item
+    public static final RegistryObject<Item> LINKER_ITEM =
+            ITEMS.register("linker",
+                    LinkerItem::new
+            );
+
     public static final RegistryObject<BlockEntityType<NuclearGeneratorBlockEntity>> NUCLEAR_GENERATOR_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("nuclear_generator_block_entity",
                     () -> BlockEntityType.Builder.of(NuclearGeneratorBlockEntity::new, NUCLEAR_GENERATOR.get()).build(null));
 
-    public static final RegistryObject<MenuType<NuclearGeneratorMenu>> NUCLEAR_GENERATOR_MENU =
-            MENUS.register("nuclear_generator_menu",
-                    () -> IForgeMenuType.create((containerId, inventory, data) -> {
-                        BlockPos pos = data.readBlockPos();
-                        NuclearGeneratorBlockEntity blockEntity = (NuclearGeneratorBlockEntity) Minecraft.getInstance().level.getBlockEntity(pos);
-                        return new NuclearGeneratorMenu(containerId, inventory, blockEntity);
-                    }));
+
 
     /*
     public static final RegistryObject<Block> RAILGUN =

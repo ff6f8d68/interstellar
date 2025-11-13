@@ -6,15 +6,19 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import team.nextlevelmodding.ar2.MasterCallEvent;
+import team.nextlevelmodding.ar2.data.TankData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +36,7 @@ public class TankBlockEntity extends BlockEntity implements IFluidTank {
 
     public TankBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     /* ================================
@@ -106,6 +111,17 @@ public class TankBlockEntity extends BlockEntity implements IFluidTank {
             }
         }
         return drained;
+    }
+
+    @SubscribeEvent
+    public void onMasterCall(MasterCallEvent event) {
+        if (event.getTargetBlock().equals(worldPosition)) {
+            // Handle tank data request
+            if (event.getData() instanceof String && "REQUEST_TANK_DATA".equals(event.getData())) {
+                TankData tankData = new TankData(tank.getFluid(), tank.getCapacity());
+                // Send data back to master (implementation depends on how master handles responses)
+            }
+        }
     }
 
     @Override

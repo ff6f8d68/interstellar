@@ -1,0 +1,84 @@
+<h1 style="color:#00f0ff; text-transform:uppercase;">Advanced Rocketry: VS</h1>
+
+<p><strong>Advanced Rocketry: VS</strong> brings the legendary <strong>Advanced Rocketry</strong> mod to <strong>Minecraft 1.20.1</strong>, now fully compatible with <strong>Valkyrien Skies 2 (VS2)</strong>!<br>
+Some assets are derived from the original <a href="https://www.curseforge.com/minecraft/mc-mods/advanced-rocketry" target="_blank">Advanced Rocketry mod</a>.</p>
+
+<hr>
+
+<h2 style="color:#00f0ff;">Features</h2>
+
+<p>This mod introduces a comprehensive set of blocks and items for advanced rocketry, space exploration, and vehicle mechanics, all integrated with Valkyrien Skies 2 for realistic physics simulation.</p>
+
+<h3>Rocket Components</h3>
+<ul>
+  <li><strong>Rocket Motors</strong>: Build powerful rockets with various motor types:
+    <ul>
+      <li>Rocket Motor: Basic rocket motor for standard propulsion.</li>
+      <li>Advanced Rocket Motor: Enhanced thrust for advanced rockets.</li>
+      <li>Advanced Bipropellant Rocket Motor: Efficient fuel usage for bipropellant rockets.</li>
+      <li>Nuclear Rocket Motor: Extreme performance nuclear-powered motor.</li>
+    </ul>
+  </li>
+  <li><strong>Fuel Tanks</strong>: Store and manage rocket fuel with modular tank systems:
+    <ul>
+      <li>Top, Middle, Bottom Tanks: Standard rocket fuel tanks (4000mB each).</li>
+      <li>Bipropellant Top, Middle, Bottom Tanks: Bipropellant tanks for advanced propulsion.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Fuels and Fluids</h3>
+<ul>
+  <li><strong>Rocket Fuels</strong>: Four types with unique properties:
+    <ul>
+      <li>Rocket Fuel: Standard engines.</li>
+      <li>Advanced Rocket Fuel: Enhanced fuel for advanced motors.</li>
+      <li>Bipropellant Rocket Fuel: Dual-component fuel for bipropellant engines.</li>
+      <li>Nuclear Rocket Fuel: High-energy fuel for nuclear propulsion.</li>
+    </ul>
+  </li>
+  <li><strong>Fuel Buckets</strong>: Portable containers for each fuel type.</li>
+</ul>
+
+<h3>Power and Machinery</h3>
+<ul>
+  <li><strong>Nuclear Generator</strong>: Generates power with a custom GUI for monitoring and control.</li>
+  <li><strong>Sawblade</strong>: Crafting tool for processing materials.</li>
+  <li><strong>Guidance Computer</strong>: Advanced computer for rocket navigation and control.</li>
+</ul>
+
+<h3>Advanced Systems</h3>
+<ul>
+  <li><strong>Tank System</strong>: Shared system for all fuel tanks, supporting fluid handling, distribution, and balancing.</li>
+  <li><strong>Nuclear Generator System</strong>: Power generation with menu interface.</li>
+  <li><strong>Particles and VFX</strong>: Custom rocket flame particles and visual effects.</li>
+  <li><strong>Ship Physics</strong>: Integration with VS2 for force-induced ships, gravity manipulation, and realistic movement.</li>
+</ul>
+
+<hr>
+
+<h2 style="color:#00f0ff;">Recommended Mods</h2>
+<ul>
+  <li><strong>Cosmic Horizons + Starlance</strong> — Recommended space mods, compatible with any VS2 space mod.</li>
+  <li>Forge Energy (FE) mods recommended for full functionality.</li>
+</ul>
+
+<h2 style="color:#00f0ff;">Compatibility</h2>
+<ul>
+  <li>Tested on <strong>Minecraft 1.20.1</strong>.</li>
+  <li>Compatible with <strong>Valkyrien Skies 2 (VS2)</strong>.</li>
+</ul>
+
+<h2 style="color:#00f0ff;">Launch Your Server</h2>
+<p>
+  <a href="https://url-shortener.curseforge.com/nOPNq" target="_blank">
+    <img src="https://media.forgecdn.net/attachments/description/1377992/description_461280b2-c9d0-48c8-9e2c-7e83b908a96c.png" alt="Launch server">
+  </a>
+</p>
+
+<hr>
+
+<p style="text-align:center; font-size:14px; color:#9ccfe5;">
+  This mod is made by <strong>Nextlevel Modding</strong><br>
+  <img src="https://media.forgecdn.net/attachments/description/1377992/description_ffd9ccbe-8206-4b20-b5bd-d372fd7da62a.png" alt="NextLevel Modding logo">
+</p>

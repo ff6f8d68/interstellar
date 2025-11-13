@@ -1,6 +1,8 @@
 package team.nextlevelmodding.ar2.blocks;
 
 import team.nextlevelmodding.ar2.utils.Thrust;
+import team.nextlevelmodding.ar2.MasterCallEvent;
+import team.nextlevelmodding.ar2.data.TestData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -8,6 +10,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.Level;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +26,7 @@ public class Test extends Block {
                 .requiresCorrectToolForDrops()
                 .noOcclusion()
         );
+        MinecraftForge.EVENT_BUS.register(this);
     }
     @Override
     public void onPlace(BlockState blockstate, Level world, BlockPos pos, BlockState oldState, boolean moving) {
@@ -43,6 +48,12 @@ public class Test extends Block {
         world.scheduleTick(pos, this, 1);
     }
 
-
+    @SubscribeEvent
+    public void onMasterCall(MasterCallEvent event) {
+        if (event.getData() instanceof TestData testData) {
+            // Apply thrust without cap
+            Thrust.applyThrust(null, event.getTargetBlock(), testData.getThrustLevel());
+        }
+    }
 
 }

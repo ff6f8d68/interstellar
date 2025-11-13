@@ -1,5 +1,6 @@
 package team.nextlevelmodding.ar2;
 
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import team.nextlevelmodding.ar2.fluids.ModFluidTypes;
 import team.nextlevelmodding.ar2.fluids.ModFluids;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -15,7 +16,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import static team.nextlevelmodding.ar2.ModBlocks.BLOCK_ENTITIES;
-import static team.nextlevelmodding.ar2.ModBlocks.MENUS;
+import static team.nextlevelmodding.ar2.ModMenus.REGISTRY;
 import team.nextlevelmodding.ar2.ModMenus;
 
 @Mod("ar2")
@@ -23,7 +24,7 @@ public class ar2 {
     public static final String MOD_ID = "ar2";
 
     public ar2() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        @SuppressWarnings("removal") IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         
         Registry.PARTICLES.register(modEventBus);
         ModFluids.register(modEventBus);
@@ -34,7 +35,7 @@ public class ar2 {
         ModCreativeTabs.register(modEventBus);
         modEventBus.addListener(this::registerParticles);
         BLOCK_ENTITIES.register(modEventBus);
-        MENUS.register(modEventBus);
+        REGISTRY.register(modEventBus);
         ModMenus.REGISTRY.register(modEventBus);
         MinecraftForge.EVENT_BUS.addListener(ModCommands::register);
         MinecraftForge.EVENT_BUS.addListener(ModEvents::onBlockRightClick);
@@ -64,6 +65,7 @@ public class ar2 {
             ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_BIPROPELLANT_ROCKET_FUEL.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_NUCLEAR_ROCKET_FUEL.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_NUCLEAR_ROCKET_FUEL.get(), RenderType.translucent());
+            ModScreens.registerScreens();
         }
     }
 }

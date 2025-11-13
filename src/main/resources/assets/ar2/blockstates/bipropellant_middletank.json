@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "facing=up": { "model": "ar2:block/bipropellant_middletank" },
+    "facing=down": { "model": "ar2:block/bipropellant_middletank", "x": 180 },
+    "facing=north": { "model": "ar2:block/bipropellant_middletank", "x": 90 },
+    "facing=south": { "model": "ar2:block/bipropellant_middletank", "x": 90, "y": 180 },
+    "facing=west": { "model": "ar2:block/bipropellant_middletank", "x": 90, "y": 270 },
+    "facing=east": { "model": "ar2:block/bipropellant_middletank", "x": 90, "y": 90 }
+  }
+}

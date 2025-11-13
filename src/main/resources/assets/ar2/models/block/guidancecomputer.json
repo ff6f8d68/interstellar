@@ -1,9 +1,12 @@
 {
-  "loader": "forge:obj",
-  "model": "ar2:models/block/models/guidance_computer.obj",
-  "flip_v": false,
+  "parent": "block/cube",
   "textures": {
     "particle": "ar2:block/guidancecomputer",
-    "texture0": "ar2:block/guidancecomputer"
+    "down": "ar2:block/guidancecomputeraccesshatch",
+    "up": "ar2:block/guidancecomputeraccesshatch",
+    "north": "ar2:block/guidancecomputer",
+    "east": "ar2:block/guidancecomputer",
+    "south": "ar2:block/guidancecomputer",
+    "west": "ar2:block/guidancecomputer"
   }
 }

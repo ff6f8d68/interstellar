@@ -60,7 +60,7 @@ public class GuinuclearengineScreen extends AbstractContainerScreen<Guinuclearen
 
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        guiGraphics.drawString(this.font, Component.translatable("gui.electriccraft.guinuclearengine.label_nuclear_generator"), 51, 7, -12829636, false);
+        guiGraphics.drawString(this.font, "nuclear generator", 51, 7, -12829636, false);
     }
 
     @Override

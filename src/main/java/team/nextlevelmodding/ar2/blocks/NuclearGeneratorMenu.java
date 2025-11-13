@@ -7,13 +7,14 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import team.nextlevelmodding.ar2.ModBlocks;
+import team.nextlevelmodding.ar2.ModMenus;
 
 public class NuclearGeneratorMenu extends AbstractContainerMenu {
 
     public final NuclearGeneratorBlockEntity blockEntity;
 
     public NuclearGeneratorMenu(int containerId, Inventory inventory, NuclearGeneratorBlockEntity blockEntity) {
-        super(ModBlocks.NUCLEAR_GENERATOR_MENU.get(), containerId);
+        super(ModMenus.GUINUCLEARENGINE.get(), containerId);
         this.blockEntity = blockEntity;
 
         // Add player inventory slots
