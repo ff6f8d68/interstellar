@@ -9,6 +9,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import team.nextlevelmodding.ar2.ModBlocks;
+import team.nextlevelmodding.ar2.gui.GuinuclearengineMenu;
 
 public class NuclearGeneratorBlockEntity extends BlockEntity implements MenuProvider {
 
@@ -23,6 +24,9 @@ public class NuclearGeneratorBlockEntity extends BlockEntity implements MenuProv
 
     @Override
     public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player) {
-        return new NuclearGeneratorMenu(containerId, inventory, this);
+        return new GuinuclearengineMenu(containerId, inventory, worldPosition);
     }
+
+
+
 }

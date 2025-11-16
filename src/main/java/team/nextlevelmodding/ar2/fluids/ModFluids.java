@@ -30,10 +30,6 @@ public class ModFluids {
     public static final RegistryObject<FlowingFluid> FLOWING_BIPROPELLANT_ROCKET_FUEL = FLUIDS.register("flowing_bipropellant_rocket_fuel",
             () -> new ForgeFlowingFluid.Flowing(ModFluids.BIPROPELLANT_ROCKET_FUEL_FLUID_PROPERTIES));
 
-    public static final RegistryObject<FlowingFluid> SOURCE_NUCLEAR_ROCKET_FUEL = FLUIDS.register("nuclear_rocket_fuel_fluid",
-            () -> new ForgeFlowingFluid.Source(ModFluids.NUCLEAR_ROCKET_FUEL_FLUID_PROPERTIES));
-    public static final RegistryObject<FlowingFluid> FLOWING_NUCLEAR_ROCKET_FUEL = FLUIDS.register("flowing_nuclear_rocket_fuel",
-            () -> new ForgeFlowingFluid.Flowing(ModFluids.NUCLEAR_ROCKET_FUEL_FLUID_PROPERTIES));
 
 
     public static final ForgeFlowingFluid.Properties ROCKET_FUEL_FLUID_PROPERTIES = new ForgeFlowingFluid.Properties(
@@ -51,10 +47,7 @@ public class ModFluids {
             .slopeFindDistance(2).levelDecreasePerBlock(2).block(() -> (net.minecraft.world.level.block.LiquidBlock) ModBlocks.BIPROPELLANT_ROCKET_FUEL_BLOCK.get())
             .bucket(() -> (net.minecraft.world.item.BucketItem) ModBlocks.BIPROPELLANT_ROCKET_FUEL_BUCKET.get());
 
-    public static final ForgeFlowingFluid.Properties NUCLEAR_ROCKET_FUEL_FLUID_PROPERTIES = new ForgeFlowingFluid.Properties(
-            ModFluidTypes.NUCLEAR_ROCKET_FUEL_FLUID_TYPE, SOURCE_NUCLEAR_ROCKET_FUEL, FLOWING_NUCLEAR_ROCKET_FUEL)
-            .slopeFindDistance(2).levelDecreasePerBlock(2).block(() -> (net.minecraft.world.level.block.LiquidBlock) ModBlocks.NUCLEAR_ROCKET_FUEL_BLOCK.get())
-            .bucket(() -> (net.minecraft.world.item.BucketItem) ModBlocks.NUCLEAR_ROCKET_FUEL_BUCKET.get());
+
 
 
     public static void register(IEventBus eventBus) {

@@ -62,7 +62,7 @@ public class NuclearGenerator extends Block implements EntityBlock {
         ItemStack itemStack = pPlayer.getItemInHand(pHand);
 
         // Handle nuclear fuel bucket
-        if (itemStack.is(ModBlocks.NUCLEAR_ROCKET_FUEL_BUCKET.get())) {
+        if (itemStack.is(ModBlocks.ROCKET_FUEL_BUCKET.get())) {
             // For now, just consume the fuel
             // In a real implementation, you would store fuel and generate power
             ItemStack emptyBucket = new ItemStack(net.minecraft.world.item.Items.BUCKET);

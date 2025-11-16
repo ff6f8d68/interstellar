@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BipropellantMiddletank extends Block implements EntityBlock {
-    public static final DirectionProperty FACING = BlockStateProperties.FACING;
+
 
     public BipropellantMiddletank() {
         super(BlockBehaviour.Properties
@@ -35,13 +35,10 @@ public class BipropellantMiddletank extends Block implements EntityBlock {
                 .requiresCorrectToolForDrops()
                 .noOcclusion()
         );
-        this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, net.minecraft.core.Direction.NORTH));
+
     }
 
-    @Override
-    protected void createBlockStateDefinition(net.minecraft.world.level.block.state.StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
-    }
+
 
     @Nullable
     @Override
@@ -69,15 +66,7 @@ public class BipropellantMiddletank extends Block implements EntityBlock {
         }
     }
 
-    @Override
-    public BlockState rotate(BlockState pState, net.minecraft.world.level.block.Rotation pRot) {
-        return pState.setValue(FACING, pRot.rotate(pState.getValue(FACING)));
-    }
 
-    @Override
-    public BlockState mirror(BlockState pState, net.minecraft.world.level.block.Mirror pMirror) {
-        return pState.setValue(FACING, pMirror.mirror(pState.getValue(FACING)));
-    }
 
     @Override
     public VoxelShape getCollisionShape(@NotNull BlockState pState, @NotNull net.minecraft.world.level.BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {

@@ -17,10 +17,10 @@ public class ModCreativeTabs {
 
     public static final RegistryObject<CreativeModeTab> TUTORIAL_TAB = CREATIVE_MODE_TABS.register("tutorial_tab",
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModBlocks.ROCKETMOTOR.get()))
-                    .title(Component.translatable(""))
+                    .title(Component.literal("AR VS controll"))
                     .displayItems((pParameters, pOutput) -> {
                         ModBlocks.ITEMS.getEntries().forEach(itemObj -> pOutput.accept(itemObj.get()));
-                        pOutput.accept(ModBlocks.ROCKETMOTOR_ITEM.get());
+                        ModItems.ITEMS.getEntries().forEach(itemObj -> pOutput.accept(itemObj.get()));
 
 
 

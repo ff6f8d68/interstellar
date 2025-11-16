@@ -36,10 +36,10 @@ public class ar2 {
         modEventBus.addListener(this::registerParticles);
         BLOCK_ENTITIES.register(modEventBus);
         REGISTRY.register(modEventBus);
-        ModMenus.REGISTRY.register(modEventBus);
         MinecraftForge.EVENT_BUS.addListener(ModCommands::register);
         MinecraftForge.EVENT_BUS.addListener(ModEvents::onBlockRightClick);
         modEventBus.addListener(this::setup);
+        ModItems.ITEMS.register(modEventBus);
 
     }
     public void registerParticles(RegisterParticleProvidersEvent event){
@@ -63,8 +63,6 @@ public class ar2 {
             ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_ADVANCED_ROCKET_FUEL.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_BIPROPELLANT_ROCKET_FUEL.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_BIPROPELLANT_ROCKET_FUEL.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_NUCLEAR_ROCKET_FUEL.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_NUCLEAR_ROCKET_FUEL.get(), RenderType.translucent());
             ModScreens.registerScreens();
         }
     }

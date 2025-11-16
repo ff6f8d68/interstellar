@@ -59,4 +59,8 @@ public class LinkerItem extends Item {
     private boolean isTestBlock(BlockEntity be) {
         return be.getBlockState().getBlock() instanceof team.nextlevelmodding.ar2.blocks.Test;
     }
+    @Override
+    public String getDescriptionId() {
+        return "linker"; // <-- This makes the in-game name literally "linker"
+    }
 }

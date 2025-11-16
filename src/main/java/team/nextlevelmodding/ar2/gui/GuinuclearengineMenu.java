@@ -38,45 +38,27 @@ public class GuinuclearengineMenu extends AbstractContainerMenu implements Suppl
     private Entity boundEntity = null;
     private BlockEntity boundBlockEntity = null;
 
-    public GuinuclearengineMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
+    public GuinuclearengineMenu(int id, Inventory inv, BlockPos pos) {
         super(ModMenus.GUINUCLEARENGINE.get(), id);
         this.entity = inv.player;
         this.world = inv.player.level();
+        this.x = pos.getX();
+        this.y = pos.getY();
+        this.z = pos.getZ();
+        this.access = ContainerLevelAccess.create(world, pos);
+
+        // Bind to block entity
         this.internal = new ItemStackHandler(1);
-        BlockPos pos = null;
-        if (extraData != null) {
-            pos = extraData.readBlockPos();
-            this.x = pos.getX();
-            this.y = pos.getY();
-            this.z = pos.getZ();
-            access = ContainerLevelAccess.create(world, pos);
+        boundBlockEntity = world.getBlockEntity(pos);
+        if (boundBlockEntity != null) {
+            boundBlockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> {
+                this.internal = capability;
+                this.bound = true;
+            });
+        } else {
+            this.internal = new ItemStackHandler(1); // fallback
         }
-        if (pos != null) {
-            if (extraData.readableBytes() == 1) { // bound to item
-                byte hand = extraData.readByte();
-                ItemStack itemstack = hand == 0 ? this.entity.getMainHandItem() : this.entity.getOffhandItem();
-                this.boundItemMatcher = () -> itemstack == (hand == 0 ? this.entity.getMainHandItem() : this.entity.getOffhandItem());
-                itemstack.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> {
-                    this.internal = capability;
-                    this.bound = true;
-                });
-            } else if (extraData.readableBytes() > 1) { // bound to entity
-                extraData.readByte(); // drop padding
-                boundEntity = world.getEntity(extraData.readVarInt());
-                if (boundEntity != null)
-                    boundEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> {
-                        this.internal = capability;
-                        this.bound = true;
-                    });
-            } else { // might be bound to block
-                boundBlockEntity = this.world.getBlockEntity(pos);
-                if (boundBlockEntity != null)
-                    boundBlockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> {
-                        this.internal = capability;
-                        this.bound = true;
-                    });
-            }
-        }
+
         this.customSlots.put(0, this.addSlot(new SlotItemHandler(internal, 0, 80, 35) {
             private final int slot = 0;
             private int x = GuinuclearengineMenu.this.x;
