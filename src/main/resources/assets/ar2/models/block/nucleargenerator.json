@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "ar2:block/machine_nuclear"
+    "all": "ar2:block/machinenuclear"
   }
 }

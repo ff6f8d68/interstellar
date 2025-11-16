@@ -1,5 +1,5 @@
 {
   "variants": {
-    "": { "model": "ar2:block/nuclear_generator" }
+    "": { "model": "ar2:block/nucleargenerator" }
   }
 }
