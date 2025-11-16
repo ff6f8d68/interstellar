@@ -19,14 +19,14 @@ public class ModCreativeTabs {
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModBlocks.ROCKETMOTOR.get()))
                     .title(Component.literal("AR: VS blocks"))
                     .displayItems((pParameters, pOutput) -> {
-                        ModItems.ITEMS.getEntries().forEach(itemObj -> pOutput.accept(itemObj.get()));
+                        ModBlocks.ITEMS.getEntries().forEach(itemObj -> pOutput.accept(itemObj.get()));
 
 
 
                     })
                     .build());
     public static final RegistryObject<CreativeModeTab> arvsitems = CREATIVE_MODE_TABS.register("arvsitems",
-            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModBlocks.ROCKETMOTOR.get()))
+            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.USB_ITEM.get()))
                     .title(Component.literal("AR: VS items"))
                     .displayItems((pParameters, pOutput) -> {
                         ModItems.ITEMS.getEntries().forEach(itemObj -> pOutput.accept(itemObj.get()));
