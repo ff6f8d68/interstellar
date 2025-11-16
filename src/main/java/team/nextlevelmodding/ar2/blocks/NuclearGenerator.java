@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class NuclearGenerator extends Block implements EntityBlock {
-    public static final DirectionProperty FACING = BlockStateProperties.FACING;
+
 
     public NuclearGenerator() {
         super(BlockBehaviour.Properties
@@ -28,7 +28,7 @@ public class NuclearGenerator extends Block implements EntityBlock {
                 .requiresCorrectToolForDrops()
                 .noOcclusion()
         );
-        this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, net.minecraft.core.Direction.NORTH));
+
     }
 
     @Nullable
@@ -37,20 +37,10 @@ public class NuclearGenerator extends Block implements EntityBlock {
         return new NuclearGeneratorBlockEntity(pPos, pState);
     }
 
-    @Override
-    protected void createBlockStateDefinition(net.minecraft.world.level.block.state.StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
-    }
 
-    @Override
-    public BlockState rotate(BlockState pState, net.minecraft.world.level.block.Rotation pRot) {
-        return pState.setValue(FACING, pRot.rotate(pState.getValue(FACING)));
-    }
 
-    @Override
-    public BlockState mirror(BlockState pState, net.minecraft.world.level.block.Mirror pMirror) {
-        return pState.setValue(FACING, pMirror.mirror(pState.getValue(FACING)));
-    }
+
+
 
     @SuppressWarnings("deprecation")
     @Override
