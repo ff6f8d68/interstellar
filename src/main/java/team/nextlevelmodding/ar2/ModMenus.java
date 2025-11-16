@@ -8,6 +8,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.core.BlockPos;
 import team.nextlevelmodding.ar2.gui.GuinuclearengineMenu;
 
 
@@ -16,7 +17,7 @@ public class ModMenus {
     public static final RegistryObject<MenuType<GuinuclearengineMenu>> GUINUCLEARENGINE =
             REGISTRY.register("guinuclearengine",
                     () -> IForgeMenuType.create((containerId, inventory, data) ->
-                            new GuinuclearengineMenu(containerId, inventory, data.readBlockPos())
+                            new GuinuclearengineMenu(containerId, inventory, data != null ? data.readBlockPos() : BlockPos.ZERO)
                     ));
 
 

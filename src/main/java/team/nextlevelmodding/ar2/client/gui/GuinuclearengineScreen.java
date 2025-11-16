@@ -31,7 +31,7 @@ public class GuinuclearengineScreen extends AbstractContainerScreen<Guinuclearen
         this.imageHeight = 166;
     }
 
-    private static final ResourceLocation texture = new ResourceLocation("art2:textures/gui/guinu.png");
+    private static final ResourceLocation texture = new ResourceLocation("ar2:textures/gui/guinu.png");
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
