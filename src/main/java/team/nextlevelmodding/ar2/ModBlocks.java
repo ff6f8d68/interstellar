@@ -124,19 +124,12 @@ public class ModBlocks {
                 @Override public String getDescriptionId() { return "nuclear rocket motor"; }
             });
 
-    public static final RegistryObject<Block> NUCLEAR_GENERATOR = BLOCKS.register("nuclear_generator", NuclearGenerator::new);
+    public static final RegistryObject<Block> NUCLEAR_GENERATOR = BLOCKS.register("nucleargenerator", NuclearGenerator::new);
     public static final RegistryObject<Item> NUCLEAR_GENERATOR_ITEM = ITEMS.register("nuclear_generator",
             () -> new BlockItem(NUCLEAR_GENERATOR.get(), new Item.Properties()) {
                 @Override public String getDescriptionId() { return "nuclear generator"; }
             });
 
-    // Rocket Fuel Fluid Blocks
-    public static final RegistryObject<Block> ROCKET_FUEL_BLOCK = BLOCKS.register("rocket_fuel",
-            () -> new LiquidBlock(ModFluids.SOURCE_ROCKET_FUEL, Block.Properties.of().noCollission().strength(100f).noLootTable()));
-    public static final RegistryObject<Block> ADVANCED_ROCKET_FUEL_BLOCK = BLOCKS.register("advanced_rocket_fuel",
-            () -> new LiquidBlock(ModFluids.SOURCE_ADVANCED_ROCKET_FUEL, Block.Properties.of().noCollission().strength(100f).noLootTable()));
-    public static final RegistryObject<Block> BIPROPELLANT_ROCKET_FUEL_BLOCK = BLOCKS.register("bipropellant_rocket_fuel",
-            () -> new LiquidBlock(ModFluids.SOURCE_BIPROPELLANT_ROCKET_FUEL, Block.Properties.of().noCollission().strength(100f).noLootTable()));
 
     // Rocket Fuel Buckets
     // Rocket Fuel Buckets with proper in-game names

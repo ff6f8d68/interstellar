@@ -1,6 +1,7 @@
 package team.nextlevelmodding.ar2.fluids;
 
 
+import team.nextlevelmodding.ar2.ModItems;
 import team.nextlevelmodding.ar2.ar2;
 import team.nextlevelmodding.ar2.ModBlocks;
 import net.minecraft.world.level.material.FlowingFluid;
@@ -34,17 +35,17 @@ public class ModFluids {
 
     public static final ForgeFlowingFluid.Properties ROCKET_FUEL_FLUID_PROPERTIES = new ForgeFlowingFluid.Properties(
             ModFluidTypes.ROCKET_FUEL_FLUID_TYPE, SOURCE_ROCKET_FUEL, FLOWING_ROCKET_FUEL)
-            .slopeFindDistance(2).levelDecreasePerBlock(2).block(() -> (net.minecraft.world.level.block.LiquidBlock) ModBlocks.ROCKET_FUEL_BLOCK.get())
+            .slopeFindDistance(2).levelDecreasePerBlock(2).block(() -> (net.minecraft.world.level.block.LiquidBlock) ModItems.ROCKET_FUEL_BLOCK.get())
             .bucket(() -> (net.minecraft.world.item.BucketItem) ModBlocks.ROCKET_FUEL_BUCKET.get());
 
     public static final ForgeFlowingFluid.Properties ADVANCED_ROCKET_FUEL_FLUID_PROPERTIES = new ForgeFlowingFluid.Properties(
             ModFluidTypes.ADVANCED_ROCKET_FUEL_FLUID_TYPE, SOURCE_ADVANCED_ROCKET_FUEL, FLOWING_ADVANCED_ROCKET_FUEL)
-            .slopeFindDistance(2).levelDecreasePerBlock(2).block(() -> (net.minecraft.world.level.block.LiquidBlock) ModBlocks.ADVANCED_ROCKET_FUEL_BLOCK.get())
+            .slopeFindDistance(2).levelDecreasePerBlock(2).block(() -> (net.minecraft.world.level.block.LiquidBlock) ModItems.ADVANCED_ROCKET_FUEL_BLOCK.get())
             .bucket(() -> (net.minecraft.world.item.BucketItem) ModBlocks.ADVANCED_ROCKET_FUEL_BUCKET.get());
 
     public static final ForgeFlowingFluid.Properties BIPROPELLANT_ROCKET_FUEL_FLUID_PROPERTIES = new ForgeFlowingFluid.Properties(
             ModFluidTypes.BIPROPELLANT_ROCKET_FUEL_FLUID_TYPE, SOURCE_BIPROPELLANT_ROCKET_FUEL, FLOWING_BIPROPELLANT_ROCKET_FUEL)
-            .slopeFindDistance(2).levelDecreasePerBlock(2).block(() -> (net.minecraft.world.level.block.LiquidBlock) ModBlocks.BIPROPELLANT_ROCKET_FUEL_BLOCK.get())
+            .slopeFindDistance(2).levelDecreasePerBlock(2).block(() -> (net.minecraft.world.level.block.LiquidBlock) ModItems.BIPROPELLANT_ROCKET_FUEL_BLOCK.get())
             .bucket(() -> (net.minecraft.world.item.BucketItem) ModBlocks.BIPROPELLANT_ROCKET_FUEL_BUCKET.get());
 
 
