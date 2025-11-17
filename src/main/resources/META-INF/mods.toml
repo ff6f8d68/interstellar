@@ -26,6 +26,27 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies."ar2"]]
+modId = "valkyrienskies"
+mandatory = true
+versionRange = "*"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies."ar2"]]
+modId = "radiation"
+mandatory = true
+versionRange = "*"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies."ar2"]]
+modId = "nlc"
+mandatory = true
+versionRange = "*"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies."ar2"]]
 modId = "minecraft"
 mandatory = true
 versionRange = "${minecraft_version_range}"

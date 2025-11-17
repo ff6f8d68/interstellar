@@ -125,7 +125,7 @@ public class ModBlocks {
             });
 
     public static final RegistryObject<Block> NUCLEAR_GENERATOR = BLOCKS.register("nucleargenerator", NuclearGenerator::new);
-    public static final RegistryObject<Item> NUCLEAR_GENERATOR_ITEM = ITEMS.register("nuclear_generator",
+    public static final RegistryObject<Item> NUCLEAR_GENERATOR_ITEM = ITEMS.register("nucleargenerator",
             () -> new BlockItem(NUCLEAR_GENERATOR.get(), new Item.Properties()) {
                 @Override public String getDescriptionId() { return "nuclear generator"; }
             });

@@ -6,6 +6,7 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.DustParticleOptions;
 import org.joml.Vector3f;
+import team.nextlevelmodding.nlc.internal.nlcadditive;
 import team.nextlevelmodding.nlc.lib.nlcrendertype;
 
 public class RocketFlameParticle extends DustParticleBase<DustParticleOptions> {
@@ -77,7 +78,7 @@ public class RocketFlameParticle extends DustParticleBase<DustParticleOptions> {
     }
     @Override
     public ParticleRenderType getRenderType() {
-        return nlcrendertype.getRenderType("ADDITIVE"); // respects texture alpha
+        return nlcadditive.ADDITIVE; // respects texture alpha
     }
     @Override
     public int getLightColor(float partialTicks) {
