@@ -12,7 +12,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
 import team.nextlevelmodding.ar2.blocks.GuidanceComputerBlock;
+import team.nextlevelmodding.ar2.blocks.GuidanceComputerBlockEntity;
 import team.nextlevelmodding.ar2.blocks.TankBlockEntity;
+
+import team.nextlevelmodding.ar2.blocks.Test;
+
+import java.util.function.Consumer;
 
 public class LinkerItem extends Item {
 
@@ -27,65 +32,64 @@ public class LinkerItem extends Item {
         ItemStack stack = context.getItemInHand();
         Player player = context.getPlayer();
 
-        if (level.isClientSide()) {
+        if (level.isClientSide() || player == null) {
             return InteractionResult.SUCCESS;
         }
 
         BlockEntity be = level.getBlockEntity(pos);
         CompoundTag tag = stack.getOrCreateTag();
 
-        if (player == null) return InteractionResult.PASS;
+        // --- CHAT LOGGING UTILITY ---
+        Consumer<String> log = msg ->
+                player.sendSystemMessage(Component.literal("§e[Linker] §f" + msg));
 
-        // --- LOGGING UTILITY ---
-        java.util.function.Consumer<String> log = (msg) ->
-                player.displayClientMessage(Component.literal("§e[Linker] §f" + msg), true);
-
-        if (be != null && be.getBlockState().getBlock() instanceof GuidanceComputerBlock) {
-            // Set as master
-            tag.putLong("MasterPos", pos.asLong());
-            tag.remove("ChildPos");
-
-            log.accept("Master set at: " + pos);
-
-            return InteractionResult.SUCCESS;
-        }
-        else if (be instanceof TankBlockEntity || isThruster(be) || isTestBlock(be)) {
-
-            if (!tag.contains("MasterPos")) {
-                log.accept("No master selected! Right-click a Guidance Computer first.");
-                return InteractionResult.SUCCESS;
-            }
-
-            BlockPos masterPos = BlockPos.of(tag.getLong("MasterPos"));
-            BlockEntity masterBe = level.getBlockEntity(masterPos);
-
-            if (masterBe == null || !(masterBe.getBlockState().getBlock() instanceof GuidanceComputerBlock masterBlock)) {
-                log.accept("Stored master is missing or invalid.");
-                return InteractionResult.SUCCESS;
-            }
-
-            log.accept("Linking child block at: " + pos);
-            tag.putLong("ChildPos", pos.asLong());
-
-            masterBlock.addChild(pos);
-
-            log.accept("Child successfully linked to master at: " + masterPos);
-
+        // --- CORE BLOCK DETECTION ---
+        if (be instanceof GuidanceComputerBlockEntity) {
+            tag.putLong("CorePos", pos.asLong());
+            tag.remove("PartPos");
+            log.accept("Core set at: " + pos);
             return InteractionResult.SUCCESS;
         }
 
-        log.accept("This block cannot be linked.");
+        // --- PART BLOCK DETECTION ---
+        boolean isPart = be instanceof TankBlockEntity || isThruster(level, pos) || isTestBlock(level, pos)
+
+;        if (isPart) {
+            if (!tag.contains("CorePos")) {
+                // User clicked part before setting Core
+                if (isThruster(level, pos)) log.accept("Cannot link thruster: no Core selected.");
+                else if (isTestBlock(level, pos)) log.accept("Cannot link test block: no Core selected.");
+                else log.accept("Cannot link this part: no Core selected.");
+                return InteractionResult.SUCCESS;
+            }
+
+            BlockPos corePos = BlockPos.of(tag.getLong("CorePos"));
+            BlockEntity coreBe = level.getBlockEntity(corePos);
+
+            if (!(coreBe instanceof GuidanceComputerBlockEntity coreEntity)) {
+                log.accept("Stored Core is missing or invalid.");
+                return InteractionResult.SUCCESS;
+            }
+
+            tag.putLong("PartPos", pos.asLong());
+            coreEntity.addChild(pos);
+            log.accept("Part linked to Core at: " + corePos);
+            return InteractionResult.SUCCESS;
+        }
+
+        // If block is neither Core nor recognized Part, silently ignore
         return InteractionResult.PASS;
     }
 
-    private boolean isThruster(BlockEntity be) {
-        if (be == null) return false; // <-- Prevent crash
-        return be.getBlockState().getBlock().getClass().getSimpleName().toLowerCase().contains("rocketmotor");
+    // Detects if block is a thruster
+    // Detects if the clicked block is a thruster (no BE required)
+    private boolean isThruster(Level level, BlockPos pos) {
+        return level.getBlockState(pos).getBlock().getClass().getSimpleName().toLowerCase().contains("rocketmotor");
     }
 
-    private boolean isTestBlock(BlockEntity be) {
-        if (be == null) return false; // <-- Prevent crash
-        return be.getBlockState().getBlock() instanceof team.nextlevelmodding.ar2.blocks.Test;
+    // Detects if the clicked block is a Test block (no BE required)
+    private boolean isTestBlock(Level level, BlockPos pos) {
+        return level.getBlockState(pos).getBlock() instanceof Test;
     }
 
 

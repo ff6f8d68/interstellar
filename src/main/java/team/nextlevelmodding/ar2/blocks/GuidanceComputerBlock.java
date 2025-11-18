@@ -1,19 +1,19 @@
 package team.nextlevelmodding.ar2.blocks;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.MinecraftForge;
-import team.nextlevelmodding.ar2.MasterCallEvent;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.EntityBlock;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Random;
 
-public class GuidanceComputerBlock extends Block {
-
-    private final Set<BlockPos> linkedChildren = new HashSet<>();
+public class GuidanceComputerBlock extends Block implements EntityBlock {
 
     public GuidanceComputerBlock() {
         super(BlockBehaviour.Properties
@@ -24,21 +24,31 @@ public class GuidanceComputerBlock extends Block {
         );
     }
 
-    public void addChild(BlockPos childPos) {
-        linkedChildren.add(childPos);
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new GuidanceComputerBlockEntity(pos, state);
     }
 
-    public void removeChild(BlockPos childPos) {
-        linkedChildren.remove(childPos);
+    @Override
+    public void onRemove(BlockState oldState, Level level, BlockPos pos,
+                         BlockState newState, boolean moved) {
+        if (!oldState.is(newState.getBlock())) {
+            BlockEntity be = level.getBlockEntity(pos);
+            if (be instanceof GuidanceComputerBlockEntity gc) {
+                gc.onRemoved();
+            }
+        }
+        super.onRemove(oldState, level, pos, newState, moved);
     }
+    @Override
+    public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
+        super.tick(state, world, pos, random);
 
-    public void callChildren(Level level, Object data) {
-        for (BlockPos childPos : linkedChildren) {
-            MinecraftForge.EVENT_BUS.post(new MasterCallEvent(childPos, data));
+        BlockEntity be = world.getBlockEntity(pos);
+        if (be instanceof GuidanceComputerBlockEntity gc) {
+            gc.tick();
         }
     }
 
-    public Set<BlockPos> getLinkedChildren() {
-        return new HashSet<>(linkedChildren);
-    }
 }

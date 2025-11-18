@@ -60,7 +60,7 @@ public class ModBlocks {
     // Simple blocks (display name = registry name)
     public static final RegistryObject<Block> SAWBLADE = BLOCKS.register("sawblade", Sawblade::new);
 
-    public static final RegistryObject<Block> GUIDANCE_COMPUTER = BLOCKS.register("guidancecomputer", Sawblade::new);
+    public static final RegistryObject<Block> GUIDANCE_COMPUTER = BLOCKS.register("guidancecomputer", GuidanceComputerBlock::new);
     public static final RegistryObject<Item> GUIDANCE_COMPUTER_ITEM = ITEMS.register("guidancecomputer",
             () -> new BlockItem(GUIDANCE_COMPUTER.get(), new Item.Properties()) {
                 @Override public String getDescriptionId() { return "guidance computer"; }
@@ -165,4 +165,11 @@ public class ModBlocks {
     public static final RegistryObject<BlockEntityType<NuclearGeneratorBlockEntity>> NUCLEAR_GENERATOR_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("nuclear_generator_block_entity",
                     () -> BlockEntityType.Builder.of(NuclearGeneratorBlockEntity::new, NUCLEAR_GENERATOR.get()).build(null));
+    public static final RegistryObject<BlockEntityType<GuidanceComputerBlockEntity>> GUIDANCE_COMPUTER_BE =
+            BLOCK_ENTITIES.register("guidance_computer_be",
+                    () -> BlockEntityType.Builder.of(
+                            GuidanceComputerBlockEntity::new,
+                            ModBlocks.GUIDANCE_COMPUTER.get()
+                    ).build(null)
+            );
 }

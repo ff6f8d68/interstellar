@@ -40,13 +40,16 @@ public class Test extends Block {
     public void tick(BlockState blockstate, ServerLevel world, BlockPos pos, RandomSource random) {
         super.tick(blockstate, world, pos, random);
 
-        // apply thrust every tick
-        Thrust.applyThrust(world, pos, 1000.0);
-
+        // check if block is powered by redstone
+        if (world.hasNeighborSignal(pos)) {
+            // apply thrust only when powered
+            Thrust.applyThrust(world, pos, 1000.0);
+        }
 
         // schedule next tick (1 tick later)
         world.scheduleTick(pos, this, 1);
     }
+
 
     @SubscribeEvent
     public void onMasterCall(MasterCallEvent event) {
