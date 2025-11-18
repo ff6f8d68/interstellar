@@ -36,48 +36,54 @@ public class Thrust {
         if (!(world instanceof ServerLevel serverLevel)) return;
         if (blockPos == null) return;
 
+        // Get the ship that manages this position
         Ship s = VSGameUtilsKt.getShipObjectManagingPos(serverLevel, blockPos);
+        ServerShip serverShip = null;
+        
+        if (s instanceof ServerShip) {
+            serverShip = (ServerShip) s;
+        } else {
+            // If no ship found, try getting the ship that contains this position
+            s = VSGameUtilsKt.getShipManagingPos(serverLevel, blockPos);
+            if (s instanceof ServerShip) {
+                serverShip = (ServerShip) s;
+            } else {
+                System.out.println("[Thrust] No ship found at position: " + blockPos);
+                return; // No ship found
+            }
+        }
 
         // Compute direction (down by default)
         Vec3 dir = targetPos != null
                 ? Vec3.atCenterOf(targetPos).subtract(Vec3.atCenterOf(blockPos))
                 : new Vec3(0, -1, 0);
 
-        if (dir.length() < 1e-6) dir = new Vec3(0, -1, 0);
+        if (dir.lengthSqr() < 1e-6) dir = new Vec3(0, -1, 0);
         dir = dir.normalize();
 
-        // Apply force ONLY if ship exists
-        if (s instanceof ServerShip serverShip) {
-            // Convert world position to ship-local (important!)
-            Vec3 worldCenter = Vec3.atCenterOf(blockPos);
-            org.joml.Vector3dc shipLocal = serverShip.getTransform()
-                    .getWorldToShip()
-                    .transformPosition(VectorConversionsMCKt.toJOML(worldCenter));
+        // Get the force inducer for this ship
+        ForceInducedShips forceInducer = ForceInducedShips.getOrCreate(serverShip);
 
-            ForceInducedShips forceInducer = ForceInducedShips.getOrCreate(serverShip);
+        // Create force data with WORLD direction mode since we're working in world space
+        ForceData data = new ForceData(
+                VectorConversionsMCKt.toJOML(dir.scale(-1)), // Invert direction for thrust
+                thrust,
+                ForceMode.POSITION, // Use POSITION to apply force at specific point
+                ForceDirectionMode.WORLD // Use WORLD to keep direction in world space
+        );
 
-            // Invert direction so thrust pushes upward (opposite of computed direction)
-            Vec3 invertedDir = dir.scale(-1);
-
-            ForceData data = new ForceData(
-                    VectorConversionsMCKt.toJOML(invertedDir),
-                    thrust,
-                    ForceMode.POSITION,
-                    ForceDirectionMode.WORLD
-            );
-
-            forceInducer.addForce(blockPos, data);
-        }
+        // Add the force to be applied next tick
+        forceInducer.addForce(blockPos, data);
 
         // Send packet to clients to spawn particles
-        sendParticlePacket(serverLevel, blockPos, s instanceof ServerShip ? (ServerShip) s : null);
+        sendParticlePacket(serverLevel, blockPos, serverShip);
     }
 
     /**
      * Overload: apply thrust downward if no target position is provided
      */
     public static void applyThrust(Level world, BlockPos blockPos, double thrust) {
-        applyThrust(world, blockPos, null, 120000); // Default to 120000 thrust
+        applyThrust(world, blockPos, null, thrust);
     }
 
     /**

@@ -16,8 +16,10 @@ import team.nextlevelmodding.ar2.blocks.GuidanceComputerBlockEntity;
 import team.nextlevelmodding.ar2.blocks.TankBlockEntity;
 
 import team.nextlevelmodding.ar2.blocks.Test;
+import team.nextlevelmodding.ar2.utils.BlockInfoFormatter;
 
 import java.util.function.Consumer;
+import net.minecraft.world.InteractionResultHolder;
 
 public class LinkerItem extends Item {
 
@@ -43,18 +45,32 @@ public class LinkerItem extends Item {
         Consumer<String> log = msg ->
                 player.sendSystemMessage(Component.literal("§e[Linker] §f" + msg));
 
+        // --- SHIFT+RIGHT-CLICK ON GUIDANCE COMPUTER TO LIST PARTS ---
+        if (player.isShiftKeyDown() && be instanceof GuidanceComputerBlockEntity coreEntity) {
+            var children = coreEntity.getChildren();
+            if (children.isEmpty()) {
+                log.accept("Core at " + BlockInfoFormatter.formatBlockInfo(level, pos) + " has no linked parts.");
+            } else {
+                log.accept("§6Parts linked to Core at " + BlockInfoFormatter.formatBlockInfo(level, pos) + ":");
+                for (BlockPos childPos : children) {
+                    String childInfo = BlockInfoFormatter.formatBlockInfo(level, childPos);
+                    log.accept("  §7- " + childInfo);
+                }
+            }
+            return InteractionResult.SUCCESS;
+        }
+
         // --- CORE BLOCK DETECTION ---
         if (be instanceof GuidanceComputerBlockEntity) {
             tag.putLong("CorePos", pos.asLong());
             tag.remove("PartPos");
-            log.accept("Core set at: " + pos);
+            log.accept("Core set at: " + BlockInfoFormatter.formatBlockInfo(level, pos));
             return InteractionResult.SUCCESS;
         }
 
         // --- PART BLOCK DETECTION ---
-        boolean isPart = be instanceof TankBlockEntity || isThruster(level, pos) || isTestBlock(level, pos)
-
-;        if (isPart) {
+        boolean isPart = be instanceof TankBlockEntity || isThruster(level, pos) || isTestBlock(level, pos);
+        if (isPart) {
             if (!tag.contains("CorePos")) {
                 // User clicked part before setting Core
                 if (isThruster(level, pos)) log.accept("Cannot link thruster: no Core selected.");
@@ -68,17 +84,43 @@ public class LinkerItem extends Item {
 
             if (!(coreBe instanceof GuidanceComputerBlockEntity coreEntity)) {
                 log.accept("Stored Core is missing or invalid.");
+                tag.remove("CorePos");
                 return InteractionResult.SUCCESS;
             }
 
             tag.putLong("PartPos", pos.asLong());
             coreEntity.addChild(pos);
-            log.accept("Part linked to Core at: " + corePos);
+            level.blockEntityChanged(corePos); // Force update to sync to clients
+            String partInfo = BlockInfoFormatter.formatBlockInfo(level, pos);
+            log.accept("§aSuccessfully linked " + partInfo + " to Core!");
             return InteractionResult.SUCCESS;
         }
 
         // If block is neither Core nor recognized Part, silently ignore
         return InteractionResult.PASS;
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, net.minecraft.world.InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+
+        if (level.isClientSide() || !player.isShiftKeyDown()) {
+            return InteractionResultHolder.pass(stack);
+        }
+
+        // --- SHIFT+RIGHT-CLICK IN AIR TO RESET LINKER ---
+        CompoundTag tag = stack.getOrCreateTag();
+        boolean hadCore = tag.contains("CorePos");
+
+        tag.remove("CorePos");
+        tag.remove("PartPos");
+
+        if (hadCore) {
+            player.sendSystemMessage(Component.literal("§e[Linker] §fLinker reset. Ready to link a new Core."));
+            return InteractionResultHolder.success(stack);
+        }
+
+        return InteractionResultHolder.pass(stack);
     }
 
     // Detects if block is a thruster
