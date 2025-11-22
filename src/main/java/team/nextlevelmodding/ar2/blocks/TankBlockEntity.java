@@ -18,7 +18,7 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import team.nextlevelmodding.ar2.MasterCallEvent;
-import team.nextlevelmodding.ar2.data.TankData;
+import team.nextlevelmodding.ar2.ar2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,8 +118,24 @@ public class TankBlockEntity extends BlockEntity implements IFluidTank {
         if (event.getTargetBlock().equals(worldPosition)) {
             // Handle tank data request
             if (event.getData() instanceof String && "REQUEST_TANK_DATA".equals(event.getData())) {
-                TankData tankData = new TankData(tank.getFluid(), tank.getCapacity());
-                // Send data back to master (implementation depends on how master handles responses)
+                // Prepare a dynamic payload (NBT) containing current fluid and capacity instead of using a custom TankData class
+                CompoundTag tankDataTag = new CompoundTag();
+                FluidStack fluid = tank.getFluid();
+                if (!fluid.isEmpty()) {
+                    // write fluid info into the tag (works with Forge FluidStack)
+                    try {
+                        fluid.writeToNBT(tankDataTag);
+                    } catch (Throwable t) {
+                        // If writeToNBT isn't available for some mappings, fall back to manual fields
+                        // fluid.getFluid() may not expose registry name in current mappings; use toString() as a safe identifier
+                        tankDataTag.putString("Fluid", fluid.getFluid().toString());
+                        tankDataTag.putInt("Amount", fluid.getAmount());
+                    }
+                }
+                tankDataTag.putInt("Capacity", tank.getCapacity());
+
+                // Log prepared payload. Implement actual response mechanism elsewhere if needed.
+                ar2.LOGGER.info("[Tank] Prepared tank data at {} : {}", worldPosition, tankDataTag);
             }
         }
     }

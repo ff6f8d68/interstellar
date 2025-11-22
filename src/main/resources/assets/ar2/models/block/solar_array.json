@@ -1,9 +1,0 @@
-{
-  "loader": "forge:obj",
-  "model": "ar2:models/solar_array.obj",
-  "flip_v": false,
-  "textures": {
-    "particle": "ar2:block/solar_array",
-    "texture0": "ar2:block/solar_array"
-  }
-}

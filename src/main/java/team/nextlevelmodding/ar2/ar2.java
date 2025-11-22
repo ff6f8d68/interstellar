@@ -1,7 +1,11 @@
 package team.nextlevelmodding.ar2;
 
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
+import team.nextlevelmodding.ar2.entity.modentitys;
+import team.nextlevelmodding.ar2.entity.seatrenderer;
 import team.nextlevelmodding.ar2.fluids.ModFluidTypes;
+import team.nextlevelmodding.ar2.client.ClientSetup;
 import team.nextlevelmodding.ar2.fluids.ModFluids;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -19,9 +23,13 @@ import static team.nextlevelmodding.ar2.ModBlocks.BLOCK_ENTITIES;
 import static team.nextlevelmodding.ar2.ModMenus.REGISTRY;
 import team.nextlevelmodding.ar2.ModMenus;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Mod("ar2")
 public class ar2 {
     public static final String MOD_ID = "ar2";
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public ar2() {
         @SuppressWarnings("removal") IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -40,12 +48,15 @@ public class ar2 {
         MinecraftForge.EVENT_BUS.addListener(ModEvents::onBlockRightClick);
         modEventBus.addListener(this::setup);
         ModItems.ITEMS.register(modEventBus);
+        modentitys.register(modEventBus);
+
 
     }
     public void registerParticles(RegisterParticleProvidersEvent event){
         event.registerSpriteSet(Registry.ROCKET_FLAME.get(), RocketFlameParticleProvider::new);
     }
     private void setup(final FMLCommonSetupEvent event) {
+        LOGGER.info("AR2 mod setup starting");
         // Only now are RegistryObjects guaranteed to exist
         TankParser.registerConnectable(ModBlocks.ROCKETMOTOR.get());
         TankParser.registerConnectable(ModBlocks.ADVROCKETMOTOR.get());
@@ -57,6 +68,7 @@ public class ar2 {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
+            EntityRenderers.register(modentitys.seat.get(), seatrenderer::new);
             ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_ROCKET_FUEL.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_ROCKET_FUEL.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_ADVANCED_ROCKET_FUEL.get(), RenderType.translucent());

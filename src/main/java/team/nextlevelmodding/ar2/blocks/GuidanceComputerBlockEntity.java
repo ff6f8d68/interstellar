@@ -5,39 +5,29 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.MinecraftForge;
 import team.nextlevelmodding.ar2.MasterCallEvent;
 import team.nextlevelmodding.ar2.ModBlocks;
-import team.nextlevelmodding.ar2.data.TestData;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import net.minecraftforge.common.MinecraftForge;
 
 public class GuidanceComputerBlockEntity extends BlockEntity {
     
     public static void tick(Level level, BlockPos pos, BlockState state, GuidanceComputerBlockEntity blockEntity) {
         if (level.isClientSide) return;
         
-        // Your tick logic here
-        // For example, you might want to process queued operations or update state
-        
-        // Example: Call children every 10 ticks (0.5 seconds) if powered
+        // Call children every 10 ticks if powered
         if (level.getGameTime() % 10 == 0 && level.hasNeighborSignal(pos)) {
-            // Pass the game time as a double to TestData
-            blockEntity.callChildren(new TestData(level.getGameTime()));
+            // Use the game time (long) as the event payload
+            blockEntity.callChildren(level.getGameTime());
         }
     }
 
     private final Set<BlockPos> linkedChildren = new HashSet<>();
-    private int tickCounter = 0;
 
     public GuidanceComputerBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlocks.GUIDANCE_COMPUTER_BE.get(), pos, state);
@@ -176,16 +166,9 @@ public class GuidanceComputerBlockEntity extends BlockEntity {
 
         // Example: Only call Test blocks if this block is powered by redstone
         if (level.hasNeighborSignal(worldPosition)) {
-            TestData data = new TestData(12000); // replace 12000 with desired thrust
+            // Use a simple numeric payload (double) instead of TestData
+            double data = 12000.0; // desired thrust
             callTestChildren(data);
-
-            // Examples of other ways to use the targeting system:
-            // callThrusterChildren(someData);       // Call only thrusters
-            // callTankChildren(someData);           // Call only tanks
-            // callChildrenOfType(TankBlockEntity.class, someData);  // Call specific type
-            
-            // Advanced: Custom predicate (e.g., only blocks below this computer)
-            // callChildrenMatching(pos -> pos.getY() < worldPosition.getY(), someData);
         }
 
         // schedule next tick

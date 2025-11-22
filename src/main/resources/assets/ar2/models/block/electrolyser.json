@@ -1,9 +1,0 @@
-{
-  "loader": "forge:obj",
-  "model": "ar2:models/electrolyser.obj",
-  "flip_v": false,
-  "textures": {
-    "particle": "ar2:block/electrolyser",
-    "texture0": "ar2:block/electrolyser"
-  }
-}

@@ -7,7 +7,6 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.DustParticleOptions;
 import org.joml.Vector3f;
 import team.nextlevelmodding.nlc.internal.nlcadditive;
-import team.nextlevelmodding.nlc.lib.nlcrendertype;
 
 public class RocketFlameParticle extends DustParticleBase<DustParticleOptions> {
     public float alpha = 1.0f; // fully opaque by default

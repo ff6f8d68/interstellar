@@ -1,0 +1,62 @@
+{
+	"parent": "block/cube",
+	"ambientocclusion": false,
+	"textures": {
+		"generic": "ar2:block/machineGeneric",
+		"wool": "minecraft:block/light_gray_wool",
+		"support": "ar2:block/smallconnector",
+		"panel": "ar2:block/panelside",
+		"particle": "ar2:block/solar"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 1, 16],
+			"faces": {
+				"down": {"uv": [0, 0, 16, 16], "texture": "#generic"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#generic"},
+				"north": {"uv": [0, 0, 16, 1], "texture": "#panel"},
+				"south": {"uv": [0, 0, 16, 1], "texture": "#panel"},
+				"east": {"uv": [0, 0, 16, 1], "texture": "#panel"},
+				"west": {"uv": [0, 0, 16, 1], "texture": "#panel"}
+			}
+		},
+		{
+			"from": [0, 3, 0],
+			"to": [16, 4, 16],
+			"faces": {
+				"down": {"uv": [0, 0, 16, 16], "texture": "#wool"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#wool"},
+				"north": {"uv": [0, 0, 16, 1], "texture": "#wool"},
+				"south": {"uv": [0, 0, 16, 1], "texture": "#wool"},
+				"east": {"uv": [0, 0, 16, 1], "texture": "#wool"},
+				"west": {"uv": [0, 0, 16, 1], "texture": "#wool"}
+			}
+		},
+		{
+			"from": [4, 1, 4],
+			"to": [12, 3, 4],
+			"faces": {
+				"north": {"uv": [4, 7, 12, 9], "texture": "#support"},
+				"south": {"uv": [4, 7, 12, 9], "texture": "#support"},
+				"east": {"uv": [4, 7, 12, 9], "texture": "#support"},
+				"west": {"uv": [4, 7, 12, 9], "texture": "#support"},
+				"up": {"uv": [4, 7, 12, 9], "texture": "#support"},
+				"down": {"uv": [4, 7, 12, 9], "texture": "#support"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson": {
+			"rotation": [10, -45, 170],
+			"translation": [0, 1.5, -2.75],
+			"scale": [0.375, 0.375, 0.375]
+		},
+		"firstperson": {
+			"rotation": [0, -135, 25],
+			"translation": [0, 4, 2],
+			"scale": [1.7, 1.7, 1.7]
+		}
+	},
+	"particle": "#particle"
+}

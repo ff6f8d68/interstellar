@@ -1,9 +1,0 @@
-{
-  "loader": "forge:obj",
-  "model": "ar2:models/orbitallaserdrill.obj",
-  "flip_v": false,
-  "textures": {
-    "particle": "ar2:block/orbitallaserdrill",
-    "texture0": "ar2:block/orbitallaserdrill"
-  }
-}

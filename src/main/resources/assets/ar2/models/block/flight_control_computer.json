@@ -1,0 +1,9 @@
+{
+  "loader": "forge:obj",
+  "model": "ar2:models/block/models/flight_control.obj",
+  "flip_v": true,
+  "textures": {
+    "particle": "ar2:block/control_computer",
+    "texture0": "ar2:block/control_computer"
+  }
+}

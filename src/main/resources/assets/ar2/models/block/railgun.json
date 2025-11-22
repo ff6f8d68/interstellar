@@ -1,9 +1,0 @@
-{
-  "loader": "forge:obj",
-  "model": "ar2:models/railgun.obj",
-  "flip_v": false,
-  "textures": {
-    "particle": "ar2:block/railgun",
-    "texture0": "ar2:block/railgun"
-  }
-}

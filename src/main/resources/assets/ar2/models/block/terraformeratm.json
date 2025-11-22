@@ -1,9 +1,0 @@
-{
-  "loader": "forge:obj",
-  "model": "ar2:models/terraformeratm.obj",
-  "flip_v": false,
-  "textures": {
-    "particle": "ar2:block/terraformeratm",
-    "texture0": "ar2:block/terraformeratm"
-  }
-}

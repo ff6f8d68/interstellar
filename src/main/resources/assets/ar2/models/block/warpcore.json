@@ -1,9 +1,0 @@
-{
-  "loader": "forge:obj",
-  "model": "ar2:models/warpcore.obj",
-  "flip_v": false,
-  "textures": {
-    "particle": "ar2:block/warpcore",
-    "texture0": "ar2:block/warpcore"
-  }
-}

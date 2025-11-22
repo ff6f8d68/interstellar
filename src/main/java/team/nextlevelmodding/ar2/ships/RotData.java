@@ -3,15 +3,15 @@ package team.nextlevelmodding.ar2.ships;
 import org.joml.Vector3d;
 
 public class RotData {
-	public final Vector3d rot;
-	public volatile ForceMode mode;
+    public final Vector3d rot;
+    public volatile ForceMode mode;
 
-	public RotData(Vector3d rot, ForceMode mode) {
-		this.rot = rot;
-		this.mode = mode;
-	}
+    public RotData(Vector3d rot, ForceMode mode) {
+        this.rot = rot;
+        this.mode = mode;
+    }
 
-	public String toString() {
-		return "Rotation: " + this.rot + " Mode: " + this.mode;
-	}
+    public String toString() {
+        return "Rotation: " + this.rot + " Mode: " + this.mode;
+    }
 }

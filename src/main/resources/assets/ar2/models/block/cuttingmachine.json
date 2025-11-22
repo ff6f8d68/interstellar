@@ -1,9 +1,0 @@
-{
-  "loader": "forge:obj",
-  "model": "ar2:models/cuttingmachine.obj",
-  "flip_v": false,
-  "textures": {
-    "particle": "ar2:block/cuttingmachine",
-    "texture0": "ar2:block/cuttingmachine"
-  }
-}

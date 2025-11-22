@@ -2,7 +2,6 @@ package team.nextlevelmodding.ar2.blocks;
 
 import team.nextlevelmodding.ar2.utils.Thrust;
 import team.nextlevelmodding.ar2.MasterCallEvent;
-import team.nextlevelmodding.ar2.data.TestData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -80,21 +79,60 @@ public class Test extends Block implements EntityBlock {
     }
 
     @SubscribeEvent
-    public static void onMasterCall(MasterCallEvent event) {
+    public void onMasterCall(MasterCallEvent event) {
         Level level = event.getLevel();
         if (level == null || level.isClientSide) return;
         
         BlockPos targetPos = event.getTargetBlock();
         Object eventData = event.getData();
-        
+
         log.info("[Test] Received MasterCallEvent at {} with data: {}", targetPos, eventData);
-        
-        if (eventData instanceof TestData) {
-            log.info("[Test] Processing TestData at {}", targetPos);
-            if (level.getBlockEntity(targetPos) instanceof TestBlockEntity) {
-                log.info("[Test] Applying thrust from MasterCallEvent at {}", targetPos);
-                Thrust.applyThrust(level, targetPos, 1000.0);
+
+        double thrustAmount = 1000.0; // default
+        boolean found = false;
+
+        if (eventData instanceof Number n) {
+            thrustAmount = ((Number) eventData).doubleValue();
+            found = true;
+        } else if (eventData instanceof String s) {
+            try {
+                thrustAmount = Double.parseDouble(s);
+                found = true;
+            } catch (NumberFormatException ignored) {
             }
+        } else if (eventData != null) {
+            String[] candidates = new String[]{"getThrustLevel", "getThrust", "getThrustValue", "getValue", "thrust", "getLevel"};
+            for (String methodName : candidates) {
+                try {
+                    var m = eventData.getClass().getMethod(methodName);
+                    Object result = m.invoke(eventData);
+                    if (result instanceof Number rn) {
+                        thrustAmount = rn.doubleValue();
+                        found = true;
+                        break;
+                    } else if (result instanceof String rs) {
+                        try {
+                            thrustAmount = Double.parseDouble(rs);
+                            found = true;
+                            break;
+                        } catch (NumberFormatException ignored) {
+                        }
+                    }
+                } catch (NoSuchMethodException ignored) {
+                    // try next
+                } catch (Throwable t) {
+                    log.warn("[Test] Error introspecting event payload", t);
+                }
+            }
+        }
+
+        if (!found && eventData != null) {
+            log.debug("[Test] No numeric payload found in event data; using default {}", thrustAmount);
+        }
+
+        if (level.getBlockEntity(targetPos) instanceof TestBlockEntity) {
+            log.info("[Test] Applying thrust from MasterCallEvent at {} amount {}", targetPos, thrustAmount);
+            Thrust.applyThrust(level, targetPos, thrustAmount);
         }
     }
 }
