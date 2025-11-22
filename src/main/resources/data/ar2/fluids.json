@@ -1,0 +1,18 @@
+{
+  "rocket_fuel": {
+    "still": "ar2:block/rocket_fuel_still",
+    "flowing": "ar2:block/rocket_fuel_flowing"
+  },
+  "advanced_rocket_fuel": {
+    "still": "ar2:block/advanced_rocket_fuel_still",
+    "flowing": "ar2:block/advanced_rocket_fuel_flowing"
+  },
+  "bipropellant_rocket_fuel": {
+    "still": "ar2:block/bipropellant_rocket_fuel_still",
+    "flowing": "ar2:block/bipropellant_rocket_fuel_flowing"
+  },
+  "nuclear_rocket_fuel": {
+    "still": "ar2:block/nuclear_rocket_fuel_still",
+    "flowing": "ar2:block/nuclear_rocket_fuel_flowing"
+  }
+}
