@@ -13,7 +13,7 @@ public class modentitys {
             DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, ar2.MOD_ID);
     public static final RegistryObject<EntityType<seatentity>> seat =
             ENTITY_TYPES.register("seatentity", () -> EntityType.Builder.of(seatentity::new, MobCategory.MISC)
-                    .sized(0.4f, 0.4f).build("seatentity"));
+                    .sized(0.25f, 0.25f).build("seatentity"));
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
     }

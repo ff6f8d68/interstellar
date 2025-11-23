@@ -20,10 +20,10 @@ public class GuidanceComputerBlockEntity extends BlockEntity {
     public static void tick(Level level, BlockPos pos, BlockState state, GuidanceComputerBlockEntity blockEntity) {
         if (level.isClientSide) return;
         
-        // Call children every 10 ticks if powered
-        if (level.getGameTime() % 10 == 0 && level.hasNeighborSignal(pos)) {
-            // Use the game time (long) as the event payload
-            blockEntity.callChildren(level.getGameTime());
+        // Call children every tick if powered (was every 10 ticks)
+        if (level.hasNeighborSignal(pos)) {
+            // Send 120000 to all linked Test blocks only
+            blockEntity.callChildrenMatching(childPos -> level.getBlockState(childPos).getBlock() == ModBlocks.TEST.get(), 120000);
         }
     }
 
@@ -56,10 +56,8 @@ public class GuidanceComputerBlockEntity extends BlockEntity {
 
     public void callChildren(Object data) {
         if (level == null) {
-            System.out.println("[GuidanceComputer] Cannot call children: Level is null");
             return;
         }
-        System.out.println("[GuidanceComputer] Calling " + linkedChildren.size() + " children with data: " + data);
         for (BlockPos child : linkedChildren) {
             System.out.println("[GuidanceComputer] Dispatching to child at " + child);
             MinecraftForge.EVENT_BUS.post(new MasterCallEvent(child, data, level));
@@ -161,18 +159,4 @@ public class GuidanceComputerBlockEntity extends BlockEntity {
     public void onRemoved() {
         linkedChildren.clear();
     }
-    public void tick() {
-        if (level == null || level.isClientSide) return;
-
-        // Example: Only call Test blocks if this block is powered by redstone
-        if (level.hasNeighborSignal(worldPosition)) {
-            // Use a simple numeric payload (double) instead of TestData
-            double data = 12000.0; // desired thrust
-            callTestChildren(data);
-        }
-
-        // schedule next tick
-        level.scheduleTick(worldPosition, getBlockState().getBlock(), 1);
-    }
-
 }
