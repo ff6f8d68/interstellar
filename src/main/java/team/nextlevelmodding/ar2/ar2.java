@@ -44,6 +44,7 @@ public class ar2 {
         modEventBus.addListener(this::registerParticles);
         BLOCK_ENTITIES.register(modEventBus);
         REGISTRY.register(modEventBus);
+        team.nextlevelmodding.ar2.gui.FlightcontrolMenu.MENUS.register(modEventBus);
         MinecraftForge.EVENT_BUS.addListener(ModCommands::register);
         MinecraftForge.EVENT_BUS.addListener(ModEvents::onBlockRightClick);
         modEventBus.addListener(this::setup);

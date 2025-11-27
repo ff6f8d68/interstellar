@@ -23,23 +23,19 @@ public class ModFluidTypes {
             DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, ar2.MOD_ID);
 
     public static final RegistryObject<FluidType> ROCKET_FUEL_FLUID_TYPE = register("rocket_fuel_fluid",
-            FluidType.Properties.create().lightLevel(4).density(20).viscosity(10).sound(SoundAction.get("drink"),
-                    SoundEvents.HONEY_DRINK), ROCKET_FUEL_OVERLAY_RL,
+            FluidType.Properties.create().lightLevel(4).density(20).viscosity(10), ROCKET_FUEL_OVERLAY_RL,
             0xFFFF8C00, new Vector3f(255f / 255f, 140f / 255f, 0f / 255f));
 
     public static final RegistryObject<FluidType> ADVANCED_ROCKET_FUEL_FLUID_TYPE = register("advanced_rocket_fuel_fluid",
-            FluidType.Properties.create().lightLevel(5).density(22).viscosity(12).sound(SoundAction.get("drink"),
-                    SoundEvents.HONEY_DRINK), ADVANCED_ROCKET_FUEL_OVERLAY_RL,
+            FluidType.Properties.create().lightLevel(5).density(22).viscosity(12), ADVANCED_ROCKET_FUEL_OVERLAY_RL,
             0xFFCC8833, new Vector3f(204f / 255f, 136f / 255f, 51f / 255f));
 
     public static final RegistryObject<FluidType> BIPROPELLANT_ROCKET_FUEL_FLUID_TYPE = register("bipropellant_rocket_fuel_fluid",
-            FluidType.Properties.create().lightLevel(3).density(18).viscosity(8).sound(SoundAction.get("drink"),
-                    SoundEvents.HONEY_DRINK), BIPROPELLANT_ROCKET_FUEL_OVERLAY_RL,
+            FluidType.Properties.create().lightLevel(3).density(18).viscosity(8), BIPROPELLANT_ROCKET_FUEL_OVERLAY_RL,
             0xFFE6AA55, new Vector3f(230f / 255f, 170f / 255f, 85f / 255f));
 
     public static final RegistryObject<FluidType> NUCLEAR_ROCKET_FUEL_FLUID_TYPE = register("nuclear_rocket_fuel_fluid",
-            FluidType.Properties.create().lightLevel(8).density(25).viscosity(15).sound(SoundAction.get("drink"),
-                    SoundEvents.HONEY_DRINK), NUCLEAR_ROCKET_FUEL_OVERLAY_RL,
+            FluidType.Properties.create().lightLevel(8).density(25).viscosity(15), NUCLEAR_ROCKET_FUEL_OVERLAY_RL,
             0xFF00FF00, new Vector3f(0f / 255f, 255f / 255f, 0f / 255f));
 
 

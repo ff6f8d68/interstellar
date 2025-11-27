@@ -1,5 +1,10 @@
 {
   "variants": {
-    "": { "model": "ar2:block/test" }
+    "facing=north": { "model": "ar2:block/test", "x": 0, "y": 0 },
+    "facing=south": { "model": "ar2:block/test", "x": 0, "y": 180 },
+    "facing=west": { "model": "ar2:block/test", "x": 0, "y": 270 },
+    "facing=east": { "model": "ar2:block/test", "x": 0, "y": 90 },
+    "facing=up": { "model": "ar2:block/test", "x": 270 },
+    "facing=down": { "model": "ar2:block/test", "x": 90 }
   }
 }

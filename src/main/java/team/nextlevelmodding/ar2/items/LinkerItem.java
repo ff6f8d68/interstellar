@@ -54,7 +54,8 @@ public class LinkerItem extends Item {
                 log.accept("§6Parts linked to Core at " + BlockInfoFormatter.formatBlockInfo(level, pos) + ":");
                 for (BlockPos childPos : children) {
                     String childInfo = BlockInfoFormatter.formatBlockInfo(level, childPos);
-                    log.accept("  §7- " + childInfo);
+                    String facingInfo = getFacingInfo(level, childPos);
+                   log.accept("  §7- " + childInfo + facingInfo);
                 }
             }
             return InteractionResult.SUCCESS;
@@ -134,6 +135,22 @@ public class LinkerItem extends Item {
         return level.getBlockState(pos).getBlock() instanceof Test;
     }
 
+    // Gets the facing direction info for a block if it has a FACING property
+    private String getFacingInfo(Level level, BlockPos pos) {
+        var state = level.getBlockState(pos);
+        try {
+            if (state.hasProperty(net.minecraft.world.level.block.state.properties.BlockStateProperties.FACING)) {
+                var facing = state.getValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.FACING);
+                return " §b[Facing: " + facing.getName().toUpperCase() + "]";
+            } else if (state.hasProperty(net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING)) {
+                var facing = state.getValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING);
+                return " §b[Facing: " + facing.getName().toUpperCase() + "]";
+            }
+        } catch (Exception e) {
+            // Block doesn't have a facing property
+        }
+        return "";
+    }
 
     @Override
     public String getDescriptionId() {

@@ -5,6 +5,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.core.Direction;
 
 public class Advbipropellantrocketmotor extends Block {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
@@ -32,5 +34,14 @@ public class Advbipropellantrocketmotor extends Block {
     @Override
     public BlockState mirror(BlockState pState, net.minecraft.world.level.block.Mirror pMirror) {
         return pState.setValue(FACING, pMirror.mirror(pState.getValue(FACING)));
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        Direction facing = context.getClickedFace();
+        if (facing == Direction.UP || facing == Direction.DOWN) {
+            facing = context.getHorizontalDirection().getOpposite();
+        }
+        return this.defaultBlockState().setValue(FACING, facing);
     }
 }

@@ -141,6 +141,24 @@ public class ModBlocks {
             BLOCK_ENTITIES.register("nuclear_generator_block_entity", () -> BlockEntityType.Builder.of(NuclearGeneratorBlockEntity::new, NUCLEAR_GENERATOR.get()).build(null));
     public static final RegistryObject<BlockEntityType<GuidanceComputerBlockEntity>> GUIDANCE_COMPUTER_BE =
             BLOCK_ENTITIES.register("guidance_computer_be", () -> BlockEntityType.Builder.of(GuidanceComputerBlockEntity::new, GUIDANCE_COMPUTER.get()).build(null));
+    public static final RegistryObject<BlockEntityType<FlightControlComputerBlockEntity>> FLIGHT_CONTROL_COMPUTER_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("flight_control_computer_block_entity", () -> {
+                java.util.concurrent.atomic.AtomicReference<BlockEntityType<FlightControlComputerBlockEntity>> typeHolder =
+                        new java.util.concurrent.atomic.AtomicReference<>();
+
+                BlockEntityType<FlightControlComputerBlockEntity> type = BlockEntityType.Builder.of((pos, state) -> {
+                            BlockEntityType<FlightControlComputerBlockEntity> t = typeHolder.get();
+                            if (t == null) {
+                                throw new IllegalStateException("FlightControlComputerBlockEntity type not initialized");
+                            }
+                            return new FlightControlComputerBlockEntity(t, pos, state);
+                        },
+                        FLIGHTCONTROLLCOMPUTER.get()
+                ).build(null);
+
+                typeHolder.set(type);
+                return type;
+            });
 
     // ---------------------------
     // Register method

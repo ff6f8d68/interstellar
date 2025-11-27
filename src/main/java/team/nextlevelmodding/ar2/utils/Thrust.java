@@ -1,6 +1,7 @@
 package team.nextlevelmodding.ar2.utils;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,6 +25,59 @@ import team.nextlevelmodding.ar2.Registry;
 import java.util.function.Supplier;
 
 public class Thrust {
+
+    /**
+     * Apply thrust in a specific direction.
+     * @param world     The world (server)
+     * @param blockPos  Block position on/near the ship
+     * @param direction Direction to apply thrust (null defaults to DOWN)
+     * @param thrust    Magnitude of force
+     */
+    public static void applyThrust(Level world, BlockPos blockPos, Direction direction, double thrust) {
+        if (!(world instanceof ServerLevel serverLevel)) return;
+        if (blockPos == null) return;
+
+        // Get the ship that manages this position
+        Ship s = VSGameUtilsKt.getShipObjectManagingPos(serverLevel, blockPos);
+        ServerShip serverShip = null;
+
+        if (s instanceof ServerShip) {
+            serverShip = (ServerShip) s;
+        } else {
+            // If no ship found, try getting the ship that contains this position
+            s = VSGameUtilsKt.getShipManagingPos(serverLevel, blockPos);
+            if (s instanceof ServerShip) {
+                serverShip = (ServerShip) s;
+            } else {
+                System.out.println("[Thrust] No ship found at position: " + blockPos);
+                return; // No ship found
+            }
+        }
+
+        // Convert Direction to Vec3
+        Direction thrustDirection = direction != null ? direction : Direction.DOWN;
+        Vec3 dir = Vec3.atLowerCornerOf(thrustDirection.getNormal());
+
+        if (dir.lengthSqr() < 1e-6) dir = new Vec3(0, -1, 0);
+        dir = dir.normalize();
+
+        // Get the force inducer for this ship
+        ForceInducedShips forceInducer = ForceInducedShips.getOrCreate(serverShip);
+
+        // Create force data with WORLD direction mode since we're working in world space
+        ForceData data = new ForceData(
+                VectorConversionsMCKt.toJOML(dir), // Direction vector for thrust
+                thrust,
+                ForceMode.POSITION, // Use POSITION to apply force at specific point
+                ForceDirectionMode.WORLD // Use WORLD to keep direction in world space
+        );
+
+        // Add the force to be applied next tick
+        forceInducer.addForce(blockPos, data);
+
+        // Send packet to clients to spawn particles
+        sendParticlePacket(serverLevel, blockPos, serverShip);
+    }
 
     /**
      * Apply thrust toward a target position.
@@ -80,10 +134,10 @@ public class Thrust {
     }
 
     /**
-     * Overload: apply thrust downward if no target position is provided
+     * Overload: apply thrust downward if no direction is provided
      */
     public static void applyThrust(Level world, BlockPos blockPos, double thrust) {
-        applyThrust(world, blockPos, null, thrust);
+        applyThrust(world, blockPos, (Direction) null, thrust);
     }
 
     /**

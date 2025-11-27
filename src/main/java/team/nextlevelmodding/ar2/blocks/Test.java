@@ -1,5 +1,6 @@
 package team.nextlevelmodding.ar2.blocks;
 
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import team.nextlevelmodding.ar2.utils.Thrust;
 import team.nextlevelmodding.ar2.MasterCallEvent;
 import net.minecraft.server.level.ServerLevel;
@@ -10,7 +11,13 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.Level;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.slf4j.Logger;
@@ -20,6 +27,7 @@ import javax.annotation.Nullable;
 
 public class Test extends Block implements EntityBlock {
     private static final Logger log = LoggerFactory.getLogger(Test.class);
+    public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
     public Test() {
         super(BlockBehaviour.Properties
@@ -28,8 +36,24 @@ public class Test extends Block implements EntityBlock {
                 .requiresCorrectToolForDrops()
                 .noOcclusion()
         );
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
         MinecraftForge.EVENT_BUS.register(this);
     }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        Direction clickedFace = context.getClickedFace();
+        return this.defaultBlockState().setValue(FACING, clickedFace.getOpposite());
+    }
+
+
+
+
 
     @Nullable
     @Override
@@ -41,7 +65,7 @@ public class Test extends Block implements EntityBlock {
     public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
         super.onPlace(state, level, pos, oldState, isMoving);
         if (!level.isClientSide) {
-            log.info("[Test] Block placed at {} in world {}", pos, level.dimension().location());
+
             level.scheduleTick(pos, this, 1);
         }
     }
@@ -62,16 +86,12 @@ public class Test extends Block implements EntityBlock {
         
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof TestBlockEntity testBlock) {
-            if (isPowered != testBlock.wasPowered) {
-                log.info("[Test] Redstone state changed at {}: {} -> {}", 
-                        pos, testBlock.wasPowered ? "POWERED" : "UNPOWERED", 
-                        isPowered ? "POWERED" : "UNPOWERED");
-                testBlock.wasPowered = isPowered;
-            }
+
 
             if (isPowered) {
-                log.debug("[Test] Applying thrust at {} with power 1000.0", pos);
-                Thrust.applyThrust(level, pos, 1000.0);
+                Direction facing = state.getValue(FACING);
+
+                Thrust.applyThrust(level, pos, facing, 1000.0);
             }
         }
         
@@ -86,7 +106,7 @@ public class Test extends Block implements EntityBlock {
         BlockPos targetPos = event.getTargetBlock();
         Object eventData = event.getData();
 
-        log.info("[Test] Received MasterCallEvent at {} with data: {}", targetPos, eventData);
+
 
         double thrustAmount = 1000.0; // default
         boolean found = false;
@@ -121,18 +141,19 @@ public class Test extends Block implements EntityBlock {
                 } catch (NoSuchMethodException ignored) {
                     // try next
                 } catch (Throwable t) {
-                    log.warn("[Test] Error introspecting event payload", t);
                 }
             }
         }
 
         if (!found && eventData != null) {
-            log.debug("[Test] No numeric payload found in event data; using default {}", thrustAmount);
+
         }
 
         if (level.getBlockEntity(targetPos) instanceof TestBlockEntity) {
-            log.info("[Test] Applying thrust from MasterCallEvent at {} amount {}", targetPos, thrustAmount);
-            Thrust.applyThrust(level, targetPos, thrustAmount);
+            BlockState state = level.getBlockState(targetPos);
+            Direction facing = state.getValue(FACING);
+
+            Thrust.applyThrust(level, targetPos, facing, thrustAmount);
         }
     }
 }

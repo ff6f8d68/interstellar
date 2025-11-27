@@ -1,5 +1,8 @@
 {
   "variants": {
-    "": { "model": "ar2:block/guidancecomputer" }
+    "facing=north": { "model": "ar2:block/guidancecomputer", "y": 180 },
+    "facing=south": { "model": "ar2:block/guidancecomputer", "y": 0 },
+    "facing=west": { "model": "ar2:block/guidancecomputer", "y": 270 },
+    "facing=east": { "model": "ar2:block/guidancecomputer", "y": 90 }
   }
 }
