@@ -14,5 +14,7 @@
   "precass": {"category": "master","sounds": [{"name": "advancedrocketry:precass","stream": false}]},
   "basiclasergun": {"category": "master","sounds": [{"name": "advancedrocketry:basiclasergun","stream": false}]},
   "gravityohhh": {"category": "master","sounds": [{"name": "advancedrocketry:gravityohhh","stream": false}]},
-  "lathe": {"category": "master","sounds": [{"name": "advancedrocketry:lathe","stream": false}]}
+  "lathe": {"category": "master","sounds": [{"name": "advancedrocketry:lathe","stream": false}]},
+  "data_loaded": {"category": "master","sounds": [{"name": "advancedrocketry:data_loaded","stream": false}]}
+
 }

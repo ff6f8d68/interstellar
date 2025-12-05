@@ -262,7 +262,7 @@ dependencies {
     // === Curios (Forge mod integration) ===
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:5.14.1+${minecraft_version}:api")
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:5.14.1+${minecraft_version}")
-
+    implementation fg.deobf("curse.maven:vs-genesis-1367303:7231399")
     // Valkyrien Skies 2 JAR (deobfuscate in dev)
 
 
@@ -383,7 +383,6 @@ shadowJar {
 tasks.build {
     dependsOn(tasks.shadowJar)
 }
-
 
 
 

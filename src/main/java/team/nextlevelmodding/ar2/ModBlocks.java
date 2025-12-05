@@ -42,8 +42,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> BIPROPELLANT_BOTTOMTANK = BLOCKS.register("bipropellant_bottomtank", BipropellantBottomtank::new);
     public static final RegistryObject<Block> ADVBIPROPELLANTROCKETMOTOR = BLOCKS.register("advbipropellantrocketmotor", Advbipropellantrocketmotor::new);
     public static final RegistryObject<Block> FLIGHTCONTROLLCOMPUTER = BLOCKS.register("flight_control_computer", flight_control_computer::new);
-    public static final RegistryObject<Block> NUCLEARROCKETMOTOR = BLOCKS.register("nuclearrocketmotor", Nuclearrocketmotor::new);
-    public static final RegistryObject<Block> NUCLEAR_GENERATOR = BLOCKS.register("nucleargenerator", NuclearGenerator::new);
+    public static final RegistryObject<Block> ENERGY_ROCKET_MOTOR = BLOCKS.register("energy_rocket_motor", EnergyRocketMotor::new);
     public static final RegistryObject<Block> SEAT = BLOCKS.register("seat", Seat::new);
 
     // ---------------------------
@@ -63,7 +62,7 @@ public class ModBlocks {
             });
     public static final RegistryObject<Item> ADVROCKETMOTOR_ITEM = ITEMS.register("advrocketmotor",
             () -> new BlockItem(ADVROCKETMOTOR.get(), new Item.Properties()) {
-                @Override public String getDescriptionId() { return "advrocketmotor"; }
+                @Override public String getDescriptionId() { return "advanced rocket motor"; }
             });
     public static final RegistryObject<Item> TOPTANK_ITEM = ITEMS.register("toptank",
             () -> new BlockItem(TOPTANK.get(), new Item.Properties()) {
@@ -81,13 +80,9 @@ public class ModBlocks {
             () -> new BlockItem(FLIGHTCONTROLLCOMPUTER.get(), new Item.Properties()) {
                 @Override public String getDescriptionId() { return "flight control computer"; }
             });
-    public static final RegistryObject<Item> NUCLEARROCKETMOTOR_ITEM = ITEMS.register("nuclearrocketmotor",
-            () -> new BlockItem(NUCLEARROCKETMOTOR.get(), new Item.Properties()) {
-                @Override public String getDescriptionId() { return "nuclear rocket motor"; }
-            });
-    public static final RegistryObject<Item> NUCLEAR_GENERATOR_ITEM = ITEMS.register("nucleargenerator",
-            () -> new BlockItem(NUCLEAR_GENERATOR.get(), new Item.Properties()) {
-                @Override public String getDescriptionId() { return "nuclear generator"; }
+    public static final RegistryObject<Item> ENERGY_ROCKET_MOTOR_ITEM = ITEMS.register("energy_rocket_motor",
+            () -> new BlockItem(ENERGY_ROCKET_MOTOR.get(), new Item.Properties()) {
+                @Override public String getDescriptionId() { return "energy-based rocket motor"; }
             });
     public static final RegistryObject<Item> SEAT_ITEM = ITEMS.register("seat",
             () -> new BlockItem(SEAT.get(), new Item.Properties()) {
@@ -137,8 +132,6 @@ public class ModBlocks {
 
     public static final RegistryObject<BlockEntityType<TestBlockEntity>> TEST_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("test_block_entity", () -> BlockEntityType.Builder.of(TestBlockEntity::new, TEST.get()).build(null));
-    public static final RegistryObject<BlockEntityType<NuclearGeneratorBlockEntity>> NUCLEAR_GENERATOR_BLOCK_ENTITY =
-            BLOCK_ENTITIES.register("nuclear_generator_block_entity", () -> BlockEntityType.Builder.of(NuclearGeneratorBlockEntity::new, NUCLEAR_GENERATOR.get()).build(null));
     public static final RegistryObject<BlockEntityType<GuidanceComputerBlockEntity>> GUIDANCE_COMPUTER_BE =
             BLOCK_ENTITIES.register("guidance_computer_be", () -> BlockEntityType.Builder.of(GuidanceComputerBlockEntity::new, GUIDANCE_COMPUTER.get()).build(null));
     public static final RegistryObject<BlockEntityType<FlightControlComputerBlockEntity>> FLIGHT_CONTROL_COMPUTER_BLOCK_ENTITY =

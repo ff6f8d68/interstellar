@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "team.nextlevelmodding.lumen.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "team.nextlevelmodding.lumen.mixins.LightRenderingMixin",
+    "team.nextlevelmodding.lumen.mixins.LightEngineMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

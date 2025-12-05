@@ -1,4 +1,4 @@
-package team.nextlevelmodding.ar2.blocks;
+package team.nextlevelmodding.lumen;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -8,17 +8,18 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.core.Direction;
 
-public class Nuclearrocketmotor extends Block {
+public class bigbulbblock extends Block {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
-    public Nuclearrocketmotor() {
-        super(BlockBehaviour.Properties
+    public bigbulbblock() {
+        super(Properties
                 .of()
                 .strength(3.0f, 6.0f)
                 .requiresCorrectToolForDrops()
                 .noOcclusion()
+                .lightLevel(state -> 150)
         );
-        this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, net.minecraft.core.Direction.NORTH));
+        this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
     }
 
     @Override

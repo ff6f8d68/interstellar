@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "facing=north": { "model": "lumen:block/bulb", "y": 0 },
+    "facing=east":  { "model": "lumen:block/bulb", "y": 90 },
+    "facing=south": { "model": "lumen:block/bulb", "y": 180 },
+    "facing=west":  { "model": "lumen:block/bulb", "y": 270 },
+    "facing=up":    { "model": "lumen:block/bulb", "x": 270 },
+    "facing=down":  { "model": "lumen:block/bulb", "x": 90 }
+  }
+}

@@ -18,6 +18,14 @@ authors = "nextlevel modding"
 description = '''a modding util for nextlevel modding'''
 logoFile = "nlc.png"
 
+[[mods]]
+modId = "lumen"
+version = "1.0.2"
+displayName = "lumen"
+authors = "nextlevel modding"
+description = '''realistic light and shadow'''
+logoFile = "lumen.png"
+
 [[dependencies."ar2"]]
 modId = "forge"
 mandatory = true

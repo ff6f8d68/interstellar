@@ -1,7 +1,9 @@
 package team.nextlevelmodding.ar2;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import team.nextlevelmodding.ar2.entity.modentitys;
 import team.nextlevelmodding.ar2.entity.seatrenderer;
 import team.nextlevelmodding.ar2.fluids.ModFluidTypes;
@@ -25,6 +27,9 @@ import team.nextlevelmodding.ar2.ModMenus;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import team.nextlevelmodding.ar2.planetry.RegisterOnReload;
+
+import java.awt.*;
 
 @Mod("ar2")
 public class ar2 {
@@ -52,6 +57,9 @@ public class ar2 {
         modentitys.register(modEventBus);
 
 
+
+
+
     }
     public void registerParticles(RegisterParticleProvidersEvent event){
         event.registerSpriteSet(Registry.ROCKET_FLAME.get(), RocketFlameParticleProvider::new);
@@ -62,8 +70,8 @@ public class ar2 {
         TankParser.registerConnectable(ModBlocks.ROCKETMOTOR.get());
         TankParser.registerConnectable(ModBlocks.ADVROCKETMOTOR.get());
         TankParser.registerConnectable(ModBlocks.ADVBIPROPELLANTROCKETMOTOR.get());
-        TankParser.registerConnectable(ModBlocks.NUCLEARROCKETMOTOR.get());
-        TankParser.registerConnectable(ModBlocks.NUCLEAR_GENERATOR.get());
+        TankParser.registerConnectable(ModBlocks.ENERGY_ROCKET_MOTOR.get());
+        RegisterOnReload.createEmptyConfig();
     }
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ClientModEvents {
@@ -79,4 +87,12 @@ public class ar2 {
             ModScreens.registerScreens();
         }
     }
+    @SubscribeEvent
+    public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            RegisterOnReload.loadAndRegister();
+            // This triggers when a player joins a server OR starts a singleplayer world
+        }
+    }
+
 }
